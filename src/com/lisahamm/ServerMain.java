@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class ServerMain {
 
-    public void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
 
         int portNumber;
         if (args.length != 1) {
