@@ -4,12 +4,12 @@ import org.junit.*;
 import static org.junit.Assert.assertEquals;
 
 public class RequestHandlerTest {
-    
+
     @Test
     public void testParseRequestWithOnlyRequestLine() throws Exception {
         String httpRequest = "GET / HTTP/1.1";
         RequestHandler requestHandler = new RequestHandler(httpRequest);
         requestHandler.parseRequest();
-        assertEquals(requestHandler.requestLine, httpRequest);
+        assertEquals(httpRequest, requestHandler.getRequestLine());
     }
 }
