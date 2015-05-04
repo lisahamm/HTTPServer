@@ -32,30 +32,13 @@ public class ServerMain {
                 String httpRequest = in.readLine();
                 System.out.println(httpRequest);
 
-                RequestParser requestParser = new RequestParser(httpRequest);
-                requestParser.parseRequest();
-                String requestLine = requestParser.getRequestLine();
+                RequestHandler requestHandler = new RequestHandler(new RequestParser(httpRequest));
 
+                String response = requestHandler.getResponse();
 
-                if (httpRequest.contains("GET /")) {
-                    out.flush();
-                    out.write("HTTP/1.1 200 OK\r\n");
-                    out.write("Content-Type: text/plain\r\n");
-                    out.write("Date: " + new Date() + "\r\n");
-                    out.write("\r\n");
-                    out.flush();
-                } else if (httpRequest.contains("POST /")) {
-                    out.flush();
-                    out.write("HTTP/1.1 200 OK\r\n");
-                    out.write("Content-Type: text/plain\r\n");
-                    out.write("Date: " + new Date() + "\r\n");
-                    out.write("\r\n");
-                    out.flush();
-                } else {
-                    out.flush();
-                    out.write("HTTP/1.1 404 Not Found\r\n");
-                    out.flush();
-                }
+                out.flush();
+                out.write(response);
+                out.flush();
                 in.close();
             }
         } catch (IOException e) {
