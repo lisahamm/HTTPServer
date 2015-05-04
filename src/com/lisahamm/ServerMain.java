@@ -32,6 +32,11 @@ public class ServerMain {
                 String httpRequest = in.readLine();
                 System.out.println(httpRequest);
 
+                RequestParser requestParser = new RequestParser(httpRequest);
+                requestParser.parseRequest();
+                String requestLine = requestParser.getRequestLine();
+
+
                 if (httpRequest.contains("GET /")) {
                     out.flush();
                     out.write("HTTP/1.1 200 OK\r\n");

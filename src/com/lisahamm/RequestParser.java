@@ -1,7 +1,6 @@
 package com.lisahamm;
 
-
-public class RequestParser {
+public class RequestParser implements Parser {
     private String httpRequest;
     private String requestLine;
     private String headers;
