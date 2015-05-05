@@ -1,5 +1,6 @@
 package com.lisahamm;
 
 public interface Parser {
-    public void parseRequest();
+    void parseRequest(Request request);
+    void updateWithParsedData();
 }
