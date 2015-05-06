@@ -3,16 +3,20 @@ package com.lisahamm;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RequestParser implements Parser {
-    private Request httpRequest;
+public class RequestParser {
+    private String rawRequest;
     private Map<String,String> parsedRequestComponents = new HashMap<>();
 
     public RequestParser() {
     }
 
-    public void parseRequest(Request httpRequest) {
-        this.httpRequest = httpRequest;
-        String request = httpRequest.getRawRequest().trim();
+    public HTTPRequest generateParsedRequest(String rawRequest) {
+        parseRequest(rawRequest);
+        return new HTTPRequest(parsedRequestComponents);
+    }
+
+    private void parseRequest(String rawRequest) {
+        String request = rawRequest.trim();
         String[] messageComponents = request.split("\r\n\r\n");
         if (messageComponents.length > 1) {
             parsedRequestComponents.put("body", messageComponents[1]);
@@ -27,10 +31,5 @@ public class RequestParser implements Parser {
         if (messageComponents.length > 1) {
             parsedRequestComponents.put("headers", messageComponents[1]);
         }
-        updateWithParsedData();
-    }
-
-    public void updateWithParsedData() {
-        httpRequest.setParsedDataFields(parsedRequestComponents);
     }
 }

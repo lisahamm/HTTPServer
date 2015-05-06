@@ -9,12 +9,12 @@ import static org.junit.Assert.assertTrue;
 public class RequestParserTest {
 
     @Test
-    public void testParseRequestWithOnlyRequestLine() throws Exception {
-        MockRequest mockRequest = new MockRequest("GET / HTTP/1.1\r\n");
-        RequestParser requestParser = new RequestParser();
-        requestParser.parseRequest(mockRequest);
-        assertEquals(true, mockRequest.setWithParsedComponents);
-    }
+//    public void testParseRequestWithOnlyRequestLine() throws Exception {
+//        MockRequest mockRequest = new MockRequest("GET / HTTP/1.1\r\n");
+//        RequestParser requestParser = new RequestParser();
+//        requestParser.parseRequest(mockRequest);
+//        assertEquals(true, mockRequest.setWithParsedComponents);
+//    }
 //
 //    @Test
 //    public void testParseRequestWithHeader() throws Exception {
@@ -54,24 +54,4 @@ public class RequestParserTest {
 //        assertTrue(requestParser.getHeaders().contains("Content-Type: text/plain"));
 //        assertEquals("Body", requestParser.getBody());
 //    }
-
-    public class MockRequest implements Request {
-        private String rawRequest;
-        public boolean setWithParsedComponents = false;
-
-        public MockRequest(String rawRequest) {
-            this.rawRequest = rawRequest;
-        }
-
-        public void parse() {
-        }
-
-        public void setParsedDataFields(Map<String, String> parsedRequestComponents) {
-            setWithParsedComponents = true;
-        }
-
-        public String getRawRequest() {
-            return rawRequest;
-        }
-    }
 }

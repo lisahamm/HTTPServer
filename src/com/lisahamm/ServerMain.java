@@ -2,7 +2,6 @@ package com.lisahamm;
 
 import java.net.*;
 import java.io.*;
-import java.util.Date;
 
 public class ServerMain {
     private static int portNumber;
@@ -14,7 +13,6 @@ public class ServerMain {
         startServer(args);
         boolean running = true;
         while (running) {
-
             try {
                 clientSocket = serverSocket.accept();
                 System.out.println("Connection made with " + clientSocket);
@@ -25,9 +23,8 @@ public class ServerMain {
 
                 String rawRequest = in.readLine();
                 if (rawRequest != null) {
-                    Parser parser = new RequestParser();
-                    HTTPRequest request = new HTTPRequest(rawRequest, parser);
-                    request.parse();
+                    RequestParser parser = new RequestParser();
+                    HTTPRequest request = parser.generateParsedRequest(rawRequest);
                     RequestHandlerFactory handlerFactory = new RequestHandlerFactory();
                     try {
                         RequestHandler requestHandler = handlerFactory.make(request.getRequestMethod());
@@ -58,10 +55,7 @@ public class ServerMain {
         } else {
             portNumber = Integer.parseInt(args[0]);
         }
-
         serverSocket = new ServerSocket(portNumber);
-
         System.out.println("Server is listening on port: " + portNumber);
     }
-
 }
