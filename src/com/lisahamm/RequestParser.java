@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestParser {
-    private String rawRequest;
     private Map<String,String> parsedRequestComponents = new HashMap<>();
 
     public RequestParser() {
@@ -17,19 +16,15 @@ public class RequestParser {
 
     private void parseRequest(String rawRequest) {
         String request = rawRequest.trim();
-        String[] messageComponents = request.split("\r\n\r\n");
+        String[] messageComponents = request.split(" ", 3);
+        parsedRequestComponents.put("requestMethod", messageComponents[0]);
+        parsedRequestComponents.put("requestURI", messageComponents[1]);
+        messageComponents = messageComponents[2].split("\r\n", 2);
+        parsedRequestComponents.put("httpVersion", messageComponents[0]);
+        messageComponents = messageComponents[1].split("\r\n\r\n");
+        parsedRequestComponents.put("headers", messageComponents[0]);
         if (messageComponents.length > 1) {
-            parsedRequestComponents.put("body", messageComponents[1]);
-            request = messageComponents[0];
-        }
-        messageComponents = request.split("\r\n", 2);
-        String requestLine = messageComponents[0];
-        parsedRequestComponents.put("requestMethod", requestLine.split(" ")[0]);
-        parsedRequestComponents.put("requestURI", requestLine.split(" ")[1]);
-        parsedRequestComponents.put("httpVersion", requestLine.split(" ")[2]);
-
-        if (messageComponents.length > 1) {
-            parsedRequestComponents.put("headers", messageComponents[1]);
+            parsedRequestComponents.put("body", messageComponents[messageComponents.length-1]);
         }
     }
 }
