@@ -1,19 +1,49 @@
 package com.lisahamm;
 
+import org.junit.Before;
 import org.junit.Test;
-
+import java.util.HashMap;
+import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by lisahamm on 5/4/15.
- */
+
 public class HTTPRequestTest {
+    private HTTPRequest request;
+    private Map<String, String> parsedComponents;
+
+    @Before
+    public void setUp() throws Exception {
+        parsedComponents = new HashMap<>();
+        parsedComponents.put("requestMethod", "GET");
+        parsedComponents.put("requestURI", "/");
+        parsedComponents.put("httpVersion", "HTTP/1.1");
+        parsedComponents.put("headers", "Host: 0.0.0.0");
+        parsedComponents.put("body", "Body");
+        request = new HTTPRequest(parsedComponents);
+    }
+
     @Test
-    public void testHTTPRequestIsParsed() throws Exception {
-        String rawRequest = "GET / HTTP/1.1\r\nHost: 0.0.0.0\r\n\r\nBody";
-        Parser requestParser = new RequestParser();
-        HTTPRequest httpRequest = new HTTPRequest(rawRequest, requestParser);
-        httpRequest.parse();
-        assertEquals("GET", httpRequest.getRequestMethod());
+    public void testHTTPRequestMethodIsSet() throws Exception {
+        assertEquals(parsedComponents.get("requestMethod"), request.getRequestMethod());
+    }
+
+    @Test
+    public void testHTTPRequestUriIsSet() throws Exception {
+        assertEquals(parsedComponents.get("requestURI"), request.getRequestURI());
+    }
+
+    @Test
+    public void testRequestHTTPVersionIsSet() throws Exception {
+        assertEquals(parsedComponents.get("httpVersion"), request.getHTTPVersion());
+    }
+
+    @Test
+    public void testRequestHeadersStringIsSet() throws Exception {
+        assertEquals(parsedComponents.get("headers"), request.getHeaders());
+    }
+
+    @Test
+    public void testRequestBodyIsSet() throws Exception {
+        assertEquals(parsedComponents.get("body"), request.getBody());
     }
 }
