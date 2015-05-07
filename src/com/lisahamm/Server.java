@@ -11,17 +11,18 @@ public class Server implements Runnable {
     private int portNumber = 0;
     private boolean running = true;
     private ServerSocket serverSocket;
+    private Socket clientSocket;
 
     public Server(int portNumber) {
         this.portNumber = portNumber;
     }
 
     public void run() {
-        try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
+        try {
+            serverSocket = new ServerSocket(portNumber);
             System.out.println("Server is listening on port: " + portNumber);
             while (running) {
-                this.serverSocket = serverSocket;
-                Socket clientSocket = serverSocket.accept();
+                clientSocket = serverSocket.accept();
                 System.out.println("Connection made with " + clientSocket);
                 PrintWriter out =
                         new PrintWriter(clientSocket.getOutputStream(), true);
@@ -38,6 +39,7 @@ public class Server implements Runnable {
             System.out.println(e.getMessage());
         } finally {
             try {
+                clientSocket.close();
                 serverSocket.close();
             } catch (IOException e) {
                 e.getMessage();
