@@ -21,10 +21,12 @@ public class RequestParser {
         parsedRequestComponents.put("requestURI", messageComponents[1]);
         messageComponents = messageComponents[2].split("\r\n", 2);
         parsedRequestComponents.put("httpVersion", messageComponents[0]);
-        messageComponents = messageComponents[1].split("\r\n\r\n");
-        parsedRequestComponents.put("headers", messageComponents[0]);
         if (messageComponents.length > 1) {
-            parsedRequestComponents.put("body", messageComponents[messageComponents.length-1]);
+            messageComponents = messageComponents[1].split("\r\n\r\n");
+            parsedRequestComponents.put("headers", messageComponents[0]);
+            if (messageComponents.length > 1) {
+                parsedRequestComponents.put("body", messageComponents[messageComponents.length - 1]);
+            }
         }
     }
 }
