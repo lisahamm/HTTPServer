@@ -25,22 +25,22 @@ public class HTTPResponseTest {
     public void testResponseLineIsConstructed() throws Exception {
         HTTPResponse response = new HTTPResponse(responseComponents);
         response.build();
-        assertTrue(response.getResponse().contains("HTTP/1.1"));
-        assertTrue(response.getResponse().contains("200"));
-        assertTrue(response.getResponse().contains("OK"));
+        assertTrue(response.build().contains("HTTP/1.1"));
+        assertTrue(response.build().contains("200"));
+        assertTrue(response.build().contains("OK"));
     }
 
     @Test
     public void testResponseIncludesHeaders() throws Exception {
         HTTPResponse response = new HTTPResponse(responseComponents);
         response.build();
-        assertTrue(response.getResponse().contains("Content-Type: text/plain"));
+        assertTrue(response.build().contains("Content-Type: text/plain"));
     }
 
     @Test
     public void testResponseIncludesBody() throws Exception {
         HTTPResponse response = new HTTPResponse(responseComponents);
         response.build();
-        assertTrue(response.getResponse().contains("This is the body."));
+        assertTrue(response.build().contains("This is the body."));
     }
 }

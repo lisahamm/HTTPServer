@@ -11,7 +11,7 @@ public class HTTPResponse {
         this.responseComponents = responseComponents;
     }
 
-    public void build() {
+    public String build() {
         String responseString = "";
         String CRLF = "\r\n";
         responseString += buildStatusLine();
@@ -19,11 +19,7 @@ public class HTTPResponse {
         responseString += responseComponents.get("headers");
         responseString += CRLF + CRLF;
         responseString += responseComponents.get("body");
-        response = responseString;
-    }
-
-    public String getResponse() {
-        return response;
+        return responseString;
     }
 
     private String buildStatusLine() {
@@ -31,7 +27,7 @@ public class HTTPResponse {
         String httpVersion = responseComponents.get("httpVersion");
         String responseCode = responseComponents.get("responseCode");
         String responsePhrase = responseComponents.get("responsePhrase");
-        return responseString += httpVersion + responseCode + responsePhrase;
+        return responseString += httpVersion + " " + responseCode + " " + responsePhrase;
     }
 
 }
