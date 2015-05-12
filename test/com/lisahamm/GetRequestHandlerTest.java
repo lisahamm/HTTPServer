@@ -31,7 +31,7 @@ public class GetRequestHandlerTest {
 
     @Test
     public void testResponseToValidRequest() throws Exception {
-        RequestHandler handler = new GetRequestHandler();
+        RequestHandler handler = new GetRequestHandler(new GetResponseBuilder());
         handler.handle(validRequest);
         assertTrue(handler.getResponse().contains("HTTP/1.1"));
         assertTrue(handler.getResponse().contains("200"));
@@ -40,15 +40,11 @@ public class GetRequestHandlerTest {
 
     @Test
     public void testResponseToInvalidRequestURI() throws Exception {
-        RequestHandler handler = new GetRequestHandler();
+        RequestHandler handler = new GetRequestHandler(new GetResponseBuilder());
         handler.handle(invalidRequest);
         assertTrue(handler.getResponse().contains("HTTP/1.1"));
         assertTrue(handler.getResponse().contains("404"));
         assertTrue(handler.getResponse().contains("Not Found"));
     }
 
-    @Test
-    public void testName() throws Exception {
-
-    }
 }
