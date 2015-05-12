@@ -11,8 +11,6 @@ public class RequestHandlerFactory {
             return new PutRequestHandler();
         else if (requestMethod.equals("OPTIONS"))
             return new OptionsRequestHandler();
-//        else if(requestMethod.equals("HEAD"))
-//            return new HeadRequestHandler();
         else
             throw new Exception("RequestHandlerFactory cannot create handler for " + requestMethod + " request");
     }
