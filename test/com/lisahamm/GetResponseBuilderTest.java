@@ -44,7 +44,13 @@ public class GetResponseBuilderTest {
 
     @Test
     public void testResponseToInvalidRequestURI() throws Exception {
-
+        ResponseBuilder builder = new GetResponseBuilder();
+        assertTrue(builder.getResponse().isEmpty());
+        builder.constructStatusLine(invalidRequest);
+        assertEquals("HTTP/1.1 404 Not Found\r\n", builder.getResponse());
+        builder.constructHeaders(invalidRequest);
+        assertTrue(builder.getResponse().contains("Content-Type: "));
+        builder.constructBody(invalidRequest);
+        assertTrue(builder.getResponse().contains("\r\n\r\n"));
     }
-
 }
