@@ -19,20 +19,21 @@ public class GetRequestHandler implements RequestHandler {
 
     public void handle(HTTPRequest request) {
         String responseCode = evaluateResponseCode(request.getRequestURI());
-        String responsePhrase = getReasonPhrase(responseCode);
-        String headers = buildHeadersString(responseCode);
-        String body = buildBody(request.getRequestURI());
         responseComponents.put("httpVersion", request.getHTTPVersion());
         responseComponents.put("responseCode", responseCode);
-        responseComponents.put("responsePhrase", responsePhrase);
-        responseComponents.put("headers", headers);
-        responseComponents.put("body", body);
-        HTTPResponse httpResponse = new HTTPResponse(responseComponents);
-        response = httpResponse.build();
+        responseComponents.put("responsePhrase", getReasonPhrase(responseCode));
+        responseComponents.put("headers", buildHeadersString(responseCode));
+        responseComponents.put("body", buildBody(request.getRequestURI()));
+        response = constructResponseString(responseComponents);
     }
 
     public String getResponse() {
         return response;
+    }
+
+    private String constructResponseString(Map<String, String> responseComponents) {
+        HTTPResponse httpResponse = new HTTPResponse(responseComponents);
+        return httpResponse.build();
     }
 
     private String evaluateResponseCode(String requestURI) {
@@ -62,7 +63,7 @@ public class GetRequestHandler implements RequestHandler {
     private String buildHeadersString(String responseCode) {
         String headers = "";
         String CRLF = "\r\n";
-        headers += "Content-Type: text/plain; charset=UTF-8";
+        headers += "Content-Type: text/html; charset=UTF-8";
         if (responseCode.equals("302")) {
             headers += CRLF + "Location: http://localhost:5000/";
         }
@@ -80,11 +81,15 @@ public class GetRequestHandler implements RequestHandler {
     }
 
     private String buildDirectoryContentsString() {
-        String directoryContents = "";
+        String directoryContents = "<p>";
         File[] directoryFiles = buildDirectoryContents();
         for(File file : directoryFiles) {
-            directoryContents += file.getName() + "\r\n";
+            String fileName = file.getName();
+            String filePath = "/" + fileName;
+            directoryContents += "<a href=\"" + filePath + "\">" + fileName + "</a>" + "\r\n";
+
         }
+        directoryContents += "</body>";
         return directoryContents;
     }
 
@@ -98,7 +103,6 @@ public class GetRequestHandler implements RequestHandler {
         }
         return new String(encoded, encoding);
     }
-
 
     private List<String> validUriOptions() {
         List<String> options = new ArrayList<>();

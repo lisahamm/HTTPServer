@@ -39,11 +39,16 @@ public class GetRequestHandlerTest {
     }
 
     @Test
-    public void testResponseToInValidResponse() throws Exception {
+    public void testResponseToInvalidRequestURI() throws Exception {
         RequestHandler handler = new GetRequestHandler();
         handler.handle(invalidRequest);
         assertTrue(handler.getResponse().contains("HTTP/1.1"));
         assertTrue(handler.getResponse().contains("404"));
         assertTrue(handler.getResponse().contains("Not Found"));
+    }
+
+    @Test
+    public void testName() throws Exception {
+
     }
 }
