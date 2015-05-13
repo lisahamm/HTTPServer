@@ -5,7 +5,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-public class Handler implements RequestHandler {
+public class RootHandler implements RequestHandler {
     private String pathToPublicDirectory = "./../cob_spec/public";
     private Charset charset = StandardCharsets.UTF_8;
 
@@ -18,7 +18,6 @@ public class Handler implements RequestHandler {
         if (requestURI.equals(this.uri)) {
             switch(requestMethod) {
                 case "GET":
-                    System.out.println("Inside root handler");
                     response.addStatusLine("200");
                     response.addHeader("Content-Type: text/html; charset=UTF-8");
                     response.addBody(buildDirectoryContentsString());
