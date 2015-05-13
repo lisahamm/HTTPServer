@@ -26,6 +26,7 @@ public class ResponseBuilder {
 
     public String getResponse() {
         constructResponse();
+        System.out.println(response);
         return response;
     }
 

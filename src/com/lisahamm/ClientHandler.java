@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 public class ClientHandler implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
-    private String response;
 
     public ClientHandler(BufferedReader in, PrintWriter out) {
         this.in = in;
@@ -21,14 +20,13 @@ public class ClientHandler implements Runnable {
             if (rawRequest != null) {
                 RequestParser parser = new RequestParser();
                 HTTPRequest request = parser.generateParsedRequest(rawRequest);
-                RequestHandlerFactory handlerFactory = new RequestHandlerFactory();
-                try {
-                    RequestHandler requestHandler = handlerFactory.make(request.getRequestMethod());
-                    requestHandler.handle(request);
-                    response = requestHandler.getResponse();
-                } catch (Exception e) {
-                    response = "HTTP/1.1 404 Not Found";
-                }
+                ResponseBuilder responseBuilder = new ResponseBuilder();
+
+                RequestRouter router = new RequestRouter();
+                router.route(request, responseBuilder);
+
+                String response = responseBuilder.getResponse();
+
                 out.flush();
                 out.write(response);
                 out.flush();
