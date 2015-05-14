@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class ClientHandler implements Runnable {
+public class ClientHandler extends Thread {
     private BufferedReader in;
     private PrintWriter out;
 
@@ -26,7 +26,9 @@ public class ClientHandler implements Runnable {
                 router.route(request, responseBuilder);
 
                 String response = responseBuilder.getResponse();
-
+                if(response.length() < 2) {
+                    response = "HTTP/1.1 404 Not Found";
+                }
                 out.flush();
                 out.write(response);
                 out.flush();

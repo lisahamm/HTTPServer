@@ -31,7 +31,7 @@ public class Server implements Runnable {
                         new InputStreamReader(clientSocket.getInputStream()));
 
                 ClientHandler clientHandler = new ClientHandler(in, out);
-                clientHandler.run();
+                clientHandler.start();
             }
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "

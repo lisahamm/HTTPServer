@@ -6,31 +6,36 @@ import java.util.Map;
 public class ResponseBuilder {
     private String httpVersion = "HTTP/1.1";
     private String CRLF = "\r\n";
-    private String response;
+    private String response = "";
     private String statusLine;
-    private String headers;
-    private String body;
+    private String headers = "";
+    private String body = "";
 
     public void addStatusLine(String statusCode) {
         String status = responseStatuses().get(statusCode);
-        statusLine = httpVersion + status + CRLF;
+        response += httpVersion + " " + status + CRLF;
     }
 
     public void addHeader(String header) {
-        headers += header + CRLF;
+        response += header + CRLF;
     }
 
     public void addBody(String bodyContent) {
-        body = CRLF + bodyContent;
+        response += CRLF + bodyContent;
     }
 
     public String getResponse() {
-        constructResponse();
         return response;
     }
 
     private void constructResponse() {
-        response = statusLine + headers + body;
+        response = statusLine;
+        if(headers.length() > 1) {
+            response += headers;
+        }
+        if(body.length() > 1) {
+            response += body;
+        }
     }
 
     private Map<String, String> responseStatuses() {
