@@ -26,5 +26,6 @@ public class RequestRouter {
         registerHandler(new FormHandler());
         registerHandler(new MethodOptionsHandler());
         registerHandler(new FileHandler());
+        registerHandler(new RedirectHandler());
     }
 }
