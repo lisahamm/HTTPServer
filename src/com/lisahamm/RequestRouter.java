@@ -7,7 +7,6 @@ public class RequestRouter {
 
     public void route(HTTPRequest request, ResponseBuilder response) {
         setup();
-        System.out.println("Number of handlers: " + requestHandlers.size());
         boolean handled = false;
         for (RequestHandler requestHandler : requestHandlers) {
             if (handled) {

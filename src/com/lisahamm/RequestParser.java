@@ -1,5 +1,7 @@
 package com.lisahamm;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +20,14 @@ public class RequestParser {
         String request = rawRequest.trim();
         String[] messageComponents = request.split(" ", 3);
         parsedRequestComponents.put("requestMethod", messageComponents[0]);
-        parsedRequestComponents.put("requestURI", messageComponents[1]);
+
+        String decodedRequestURI = null;
+        try {
+            decodedRequestURI = URLDecoder.decode(messageComponents[1], "UTF-8");
+            parsedRequestComponents.put("requestURI", decodedRequestURI);
+        } catch (UnsupportedEncodingException e) {
+            parsedRequestComponents.put("requestURI", messageComponents[1]);
+        }
         messageComponents = messageComponents[2].split("\r\n", 2);
         parsedRequestComponents.put("httpVersion", messageComponents[0]);
         if (messageComponents.length > 1) {

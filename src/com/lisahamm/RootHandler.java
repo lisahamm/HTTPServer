@@ -49,5 +49,4 @@ public class RootHandler implements RequestHandler {
         directoryContents += "</p>";
         return directoryContents;
     }
-
 }
