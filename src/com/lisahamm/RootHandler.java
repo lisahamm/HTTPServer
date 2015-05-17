@@ -37,7 +37,7 @@ public class RootHandler implements RequestHandler {
         return files;
     }
 
-    private String buildDirectoryContentsString() {
+    private byte[] buildDirectoryContentsString() {
         String directoryContents = "<p>";
         File[] directoryFiles = buildDirectoryContents();
         for(File file : directoryFiles) {
@@ -47,6 +47,6 @@ public class RootHandler implements RequestHandler {
 
         }
         directoryContents += "</p>";
-        return directoryContents;
+        return directoryContents.getBytes();
     }
 }
