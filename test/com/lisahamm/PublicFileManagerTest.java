@@ -9,8 +9,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class FileManagerTest {
-    private FileManager fileManager;
+public class PublicFileManagerTest {
+    private PublicFileManager fileManager;
     private String directoryPath = "./../cob_spec/public";
     private String file1Name = "file1";
     private String file2Name = "file200";
@@ -18,18 +18,16 @@ public class FileManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        fileManager = new FileManager(directoryPath);
+        fileManager = new PublicFileManager(directoryPath);
     }
 
     @Test
     public void testReturnsTrueIfFileExistsInDirectory() throws Exception {
-        FileManager fileManager = new FileManager(directoryPath);
         assertTrue(fileManager.isFileFound(file1Name));
     }
 
     @Test
     public void testReturnsFalseIfFileDoesNotExistInDirectory() throws Exception {
-        FileManager fileManager = new FileManager(directoryPath);
         assertFalse(fileManager.isFileFound(file2Name));
     }
 

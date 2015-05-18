@@ -17,7 +17,7 @@ public class FileHandlerTest {
     @Before
     public void setUp() throws Exception {
         response = new ResponseBuilder();
-        DirectoryManager fileManager = new MockFileManager();
+        FileManager fileManager = new MockFileManager();
         fileHandler = new FileHandler(fileManager);
     }
 
@@ -64,7 +64,7 @@ public class FileHandlerTest {
         return new HTTPRequest(parsedComponents);
     }
 
-    public class MockFileManager implements DirectoryManager {
+    public class MockFileManager implements FileManager {
         public boolean isFileFound(String fileName) {
             if (fileName.equals("file1") || fileName.equals("image.gif")) {
                 return true;

@@ -4,12 +4,15 @@ package com.lisahamm;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class RootHandler implements RequestHandler {
-    private String pathToPublicDirectory = "./../cob_spec/public";
-    private Charset charset = StandardCharsets.UTF_8;
-
+    private DirectoryManager directoryManager;
     public static final String uri = "/";
+
+    public RootHandler(DirectoryManager directoryManager) {
+        this.directoryManager = directoryManager;
+    }
 
     public boolean handle(HTTPRequest request, ResponseBuilder response) {
         String requestMethod = request.getRequestMethod();
@@ -20,7 +23,9 @@ public class RootHandler implements RequestHandler {
                 case "GET":
                     response.addStatusLine("200");
                     response.addHeader("Content-Type: text/html");
-                    response.addBody(buildDirectoryContentsString());
+                    List<String> publicFiles = directoryManager.buildDirectoryContents();
+                    String html = addHtmlLinks(publicFiles);
+                    response.addBody(html.getBytes());
                    break;
                 default:
                     response.addStatusLine("405");
@@ -31,22 +36,21 @@ public class RootHandler implements RequestHandler {
         return false;
     }
 
-    private File[] buildDirectoryContents() {
-        File f = new File(pathToPublicDirectory);
-        File[] files = f.listFiles();
-        return files;
+    private String addHtmlLinks(List<String>fileNames) {
+        String html = "";
+        html += "<p>";
+        for(String file : fileNames) {
+            String filePath = "/" + file;
+            html += addHtmlLink(filePath, file);
+            html += "<br>";
+        }
+        html += "</p>";
+        return html;
     }
 
-    private byte[] buildDirectoryContentsString() {
-        String directoryContents = "<p>";
-        File[] directoryFiles = buildDirectoryContents();
-        for(File file : directoryFiles) {
-            String fileName = file.getName();
-            String filePath = "/" + fileName;
-            directoryContents += "<a href=\"" + filePath + "\">" + fileName + "</a>" + "\r\n";
-
-        }
-        directoryContents += "</p>";
-        return directoryContents.getBytes();
+    private String addHtmlLink(String link, String linkName) {
+        String html = "<a href=\"";
+        html += link + "\">" + linkName + "</a>";
+        return html;
     }
 }
