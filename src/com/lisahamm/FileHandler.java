@@ -1,9 +1,9 @@
 package com.lisahamm;
 
 public class FileHandler implements RequestHandler {
-    private FileManager fileManager;
+    private DirectoryManager fileManager;
 
-    public FileHandler(FileManager fileManager) {
+    public FileHandler(DirectoryManager fileManager) {
         this.fileManager = fileManager;
     }
 
