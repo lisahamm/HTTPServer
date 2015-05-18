@@ -21,10 +21,11 @@ public class RequestRouter {
     }
 
     private void setup() {
+        String pathToPublicDirectory = "./../cob_spec/public";
         registerHandler(new RootHandler());
         registerHandler(new FormHandler());
         registerHandler(new MethodOptionsHandler());
-        registerHandler(new FileHandler());
+        registerHandler(new FileHandler(new FileManager(pathToPublicDirectory)));
         registerHandler(new RedirectHandler());
     }
 }
