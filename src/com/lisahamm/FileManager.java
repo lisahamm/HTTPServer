@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileManager {
+public class FileManager implements DirectoryManager {
 
     private String directoryPath;
 
@@ -46,7 +46,7 @@ public class FileManager {
     public String getContentType(String requestURI) {
         String filePath = directoryPath + requestURI;
         FileNameMap fileNameMap = URLConnection.getFileNameMap();
-        String type = fileNameMap.getContentTypeFor(directoryPath);
+        String type = fileNameMap.getContentTypeFor(filePath);
         if (type == null) {
             type = "text/plain";
         }
