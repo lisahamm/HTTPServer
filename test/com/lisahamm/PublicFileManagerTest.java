@@ -37,12 +37,4 @@ public class PublicFileManagerTest {
         assertEquals("file1", files.get(0));
     }
 
-    @Test
-    public void testItAddsLinksToFileNames() throws Exception {
-        List<String> files = fileManager.buildDirectoryContents();
-        String directoryLinks = fileManager.addHtmlLinks(files);
-        String file1Link = "<a href=\"/file1\">file1</a>";
-        assertTrue(directoryLinks.contains(file1Link));
-    }
-
 }
