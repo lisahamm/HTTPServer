@@ -17,8 +17,6 @@ public class HTTPRequestTest {
         parsedComponents.put("requestMethod", "GET");
         parsedComponents.put("requestURI", "/");
         parsedComponents.put("httpVersion", "HTTP/1.1");
-        parsedComponents.put("headers", "Host: 0.0.0.0");
-        parsedComponents.put("body", "Body");
         request = new HTTPRequest(parsedComponents);
     }
 

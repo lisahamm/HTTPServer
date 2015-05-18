@@ -33,5 +33,4 @@ public class ResponseBuilderTest {
         assertEquals(responseHeader200, response.getResponseHeader());
     }
 
-
 }
