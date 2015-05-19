@@ -27,5 +27,6 @@ public class RequestRouter {
         registerHandler(new MethodOptionsHandler());
         registerHandler(new FileHandler(new PublicFileManager(pathToPublicDirectory)));
         registerHandler(new RedirectHandler());
+        registerHandler(new ParametersHandler());
     }
 }
