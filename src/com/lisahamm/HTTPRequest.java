@@ -8,16 +8,15 @@ public class HTTPRequest {
     private String httpVersion;
     private String headers;
     private String body;
-    private String params;
+    private Map<String, String> params;
 
-    public HTTPRequest(Map<String, String> parsedRequestComponents) {
+    public HTTPRequest(Map<String, String> parsedRequestComponents, Map<String,String> params) {
         requestMethod = parsedRequestComponents.get("requestMethod");
         requestURI = parsedRequestComponents.get("requestURI");
         httpVersion = parsedRequestComponents.get("httpVersion");
         headers = parsedRequestComponents.get("headers");
         body = parsedRequestComponents.get("body");
-        params = parsedRequestComponents.get("params");
-
+        this.params = params;
     }
 
     public String getRequestMethod() {
@@ -38,5 +37,9 @@ public class HTTPRequest {
 
     public String getBody() {
         return body;
+    }
+
+    public Map<String, String> getParams() {
+        return params;
     }
 }

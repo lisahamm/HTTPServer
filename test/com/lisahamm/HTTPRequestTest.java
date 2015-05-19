@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 public class HTTPRequestTest {
     private HTTPRequest request;
     private Map<String, String> parsedComponents;
+    private Map<String, String> params;
 
     @Before
     public void setUp() throws Exception {
@@ -17,7 +18,9 @@ public class HTTPRequestTest {
         parsedComponents.put("requestMethod", "GET");
         parsedComponents.put("requestURI", "/");
         parsedComponents.put("httpVersion", "HTTP/1.1");
-        request = new HTTPRequest(parsedComponents);
+        params = new HashMap<>();
+        params.put("variable1Key", "variable1Value");
+        request = new HTTPRequest(parsedComponents, params);
     }
 
     @Test
@@ -43,5 +46,10 @@ public class HTTPRequestTest {
     @Test
     public void testRequestBodyIsSet() throws Exception {
         assertEquals(parsedComponents.get("body"), request.getBody());
+    }
+
+    @Test
+    public void testRequestParamsAreSet() throws Exception {
+        assertEquals(params.get("variable1Key"), request.getParams().get("variable1Key"));
     }
 }
