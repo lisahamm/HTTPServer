@@ -7,9 +7,9 @@ public class ResponseBuilder {
     private String httpVersion = "HTTP/1.1";
     private String CRLF = "\r\n";
     private String space = " ";
-    private String response = "";
+    private StringBuilder responseHeader = new StringBuilder();
     private String statusLine;
-    private String headers = "";
+    private StringBuilder headers = new StringBuilder();
     private byte[] body;
 
     public void addStatusLine(String statusCode) {
@@ -18,7 +18,7 @@ public class ResponseBuilder {
     }
 
     public void addHeader(String header) {
-        headers += header + CRLF;
+        headers.append(header + CRLF);
     }
 
     public void addBody(byte[] bodyContent) {
@@ -27,7 +27,7 @@ public class ResponseBuilder {
 
     public String getResponseHeader() {
         constructResponseHeader();
-        return response;
+        return responseHeader.toString();
     }
 
     public byte[] getBody() {
@@ -36,9 +36,9 @@ public class ResponseBuilder {
 
     private void constructResponseHeader() {
         if (statusLine != null) {
-            response = statusLine;
-            if(headers != null) {
-                response += headers;
+            responseHeader.append(statusLine);
+            if(headers.length() > 0) {
+                responseHeader.append(headers);
             }
         }
     }
