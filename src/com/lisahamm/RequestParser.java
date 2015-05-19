@@ -19,15 +19,9 @@ public class RequestParser {
     private void parseRequest(String rawRequest) {
         String request = rawRequest.trim();
         String[] messageComponents = request.split(" ", 3);
-        parsedRequestComponents.put("requestMethod", messageComponents[0]);
 
-        String decodedRequestURI = null;
-        try {
-            decodedRequestURI = URLDecoder.decode(messageComponents[1], "UTF-8");
-            parsedRequestComponents.put("requestURI", decodedRequestURI);
-        } catch (UnsupportedEncodingException e) {
-            parsedRequestComponents.put("requestURI", messageComponents[1]);
-        }
+        parsedRequestComponents.put("requestMethod", messageComponents[0]);
+        parseRequestURI(messageComponents[1]);
         messageComponents = messageComponents[2].split("\r\n", 2);
         parsedRequestComponents.put("httpVersion", messageComponents[0]);
         if (messageComponents.length > 1) {
@@ -37,5 +31,37 @@ public class RequestParser {
                 parsedRequestComponents.put("body", messageComponents[messageComponents.length - 1]);
             }
         }
+    }
+
+    private void parseRequestURI(String uri) {
+        String decodedRequestURI = decodeRequestURI(uri);
+        if (decodedRequestURI.contains("?")) {
+            parsedRequestComponents.put("requestURI", getUriWithoutParams(decodedRequestURI));
+            parsedRequestComponents.put("params", getRequestParams(decodedRequestURI));
+        } else {
+            parsedRequestComponents.put("requestURI", decodedRequestURI);
+        }
+    }
+
+    private String decodeRequestURI(String uri) {
+        String decodedRequestURI;
+        try {
+            decodedRequestURI = URLDecoder.decode(uri, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            decodedRequestURI = uri;
+        }
+        return decodedRequestURI;
+    }
+
+    private String getUriWithoutParams(String uri) {
+        return uri.split("\\?")[0];
+    }
+
+    private String getRequestParams(String uri) {
+        String params = "";
+        if (uri.contains("?")) {
+            params = uri.split("\\?")[1];
+        }
+        return params;
     }
 }

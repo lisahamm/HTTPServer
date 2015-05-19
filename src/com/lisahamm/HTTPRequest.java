@@ -8,7 +8,7 @@ public class HTTPRequest {
     private String httpVersion;
     private String headers;
     private String body;
-
+    private String params;
 
     public HTTPRequest(Map<String, String> parsedRequestComponents) {
         requestMethod = parsedRequestComponents.get("requestMethod");
@@ -16,6 +16,8 @@ public class HTTPRequest {
         httpVersion = parsedRequestComponents.get("httpVersion");
         headers = parsedRequestComponents.get("headers");
         body = parsedRequestComponents.get("body");
+        params = parsedRequestComponents.get("params");
+
     }
 
     public String getRequestMethod() {
