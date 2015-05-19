@@ -61,7 +61,7 @@ public class FileHandlerTest {
         parsedComponents.put("requestMethod", method.toUpperCase());
         parsedComponents.put("requestURI", uri);
         parsedComponents.put("httpVersion", "HTTP/1.1");
-        return new HTTPRequest(parsedComponents);
+        return new HTTPRequest(parsedComponents, new HashMap<>());
     }
 
     public class MockFileManager implements FileManager {
