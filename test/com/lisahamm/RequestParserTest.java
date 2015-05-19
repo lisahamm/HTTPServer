@@ -1,25 +1,19 @@
 package com.lisahamm;
 import org.junit.*;
 
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
 
 public class RequestParserTest {
     private RequestParser requestParser;
     private String rawRequest;
     private String rawRequestEncoded;
-    private String requestUriWithParams;
-    private String requestWithOneParam;
 
     @Before
     public void setUp() throws Exception {
         requestParser = new RequestParser();
         rawRequest = "GET / HTTP/1.1\r\nHost: 0.0.0.0\r\n\r\nBody";
         rawRequestEncoded = "GET /file1%20copy HTTP/1.1\r\nHost: 0.0.0.0\r\n";
-        requestWithOneParam = "GET /parameters?variable_1=Operators";
-        requestUriWithParams = "GET /parameters?variable_1=Operators%20%3C%2C%20%3E%2C%20%3D%2C%20!%3D%3B%20%2B%2C%20-%2C%20*%2C%20%26%2C%20%40%2C%20%23%2C%20%24%2C%20%5B%2C%20%5D%3A%20%22is%20that%20all%22%3F&variable_2=stuff HTTP/1.1";
     }
 
     @Test
@@ -47,23 +41,61 @@ public class RequestParserTest {
     }
 
     @Test
-    public void testRequestBodyIsParsed() throws Exception {
-        HTTPRequest request = requestParser.generateParsedRequest(rawRequest);
-        assertEquals("Body", request.getBody());
-    }
-
-    @Test
     public void testRequestHeaderIsParsed() throws Exception {
         HTTPRequest request = requestParser.generateParsedRequest(rawRequest);
         assertEquals("Host: 0.0.0.0", request.getHeaders());
     }
 
     @Test
-    public void testRequestWithParamsIsParsed() throws Exception {
-        String uriWithOneParam = "/parameters?variable_1=Operators";
-        String params = requestParser.getRequestParams(uriWithOneParam);
-        assertEquals("variable_1=Operators", params);
+    public void testRequestBodyIsParsed() throws Exception {
+        HTTPRequest request = requestParser.generateParsedRequest(rawRequest);
+        assertEquals("Body", request.getBody());
+    }
 
+    @Test
+    public void testRequestParamIsParsed() throws Exception {
+        String paramKey = "variable_1";
+        String paramValue = "Operators";
+        String assignmentOperator = "=";
+        String paramKeyValuePair = paramKey + assignmentOperator + paramValue;
+        String rawRequestWithParam = generateRawGetParamsRequest(paramKeyValuePair);
+        HTTPRequest requestWithParam = requestParser.generateParsedRequest(rawRequestWithParam);
+        assertEquals(paramValue, requestWithParam.getParams().get(paramKey));
+    }
 
+    @Test
+    public void testRequestParamsAreParsed() throws Exception {
+        String param1Key = "variable_1";
+        String param1Value = "Operators";
+        String param2Key = "variable_2";
+        String param2Value = "stuff";
+        String assignmentOperator = "=";
+        String params = param1Key + assignmentOperator + param1Value;
+        params += "&" + param2Key + assignmentOperator + param2Value;
+        String rawRequestWithParams = generateRawGetParamsRequest(params);
+        HTTPRequest requestWithParams = requestParser.generateParsedRequest(rawRequestWithParams);
+        assertEquals(param1Value, requestWithParams.getParams().get(param1Key));
+        assertEquals(param2Value, requestWithParams.getParams().get(param2Key));
+    }
+
+    @Test
+    public void testEncodedParamsAreParsed() throws Exception {
+        String param1Key = "variable_1";
+        String param1Value = "Operators <, >, =, !=; +, -, *, &, @, #, $, [, ]: \"is that all\"?";
+        String param2Key = "variable_2";
+        String param2Value = "stuff";
+        String encodedParams = "variable_1=Operators%20%3C%2C%20%3E%2C%20%3D%2C%20!%3D%3B%20%2B%2C%20-%2C%20*%2C%20%26%2C%20%40%2C%20%23%2C%20%24%2C%20%5B%2C%20%5D%3A%20%22is%20that%20all%22%3F&variable_2=stuff";
+        String rawRequestWithParams = generateRawGetParamsRequest(encodedParams);
+        HTTPRequest requestWithParams = requestParser.generateParsedRequest(rawRequestWithParams);
+        assertEquals(param1Value, requestWithParams.getParams().get(param1Key));
+        assertEquals(param2Value, requestWithParams.getParams().get(param2Key));
+    }
+
+    private String generateRawGetParamsRequest(String params) {
+        String space = " ";
+        StringBuilder rawRequest = new StringBuilder("GET /parameters?");
+        rawRequest.append(params + space);
+        rawRequest.append("HTTP/1.1");
+        return rawRequest.toString();
     }
 }
