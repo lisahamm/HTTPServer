@@ -9,8 +9,10 @@ public class ResponseBuilderTest {
     private String status200 = "200";
     private String response200 = "HTTP/1.1 200 OK\r\n";
     private String htmlContentHeader = "Content-Type: text/html";
-    private String responseHeader200 = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n";
-    private String body = "This is the body";
+    private String allowHeader = "Allow: GET";
+    private String responseWithHeader200 = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n";
+    private String responseWithHeaders200 = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nAllow: GET\r\n";
+    private byte[] body = "This is the body".getBytes();
     private ResponseBuilder response;
 
     @Before
@@ -22,15 +24,26 @@ public class ResponseBuilderTest {
     public void testBuildResponseWithOnlyStatusLine() throws Exception {
         response.addStatusLine(status200);
         assertEquals(response200, response.getResponseHeader());
-//        response.addBody(body);
-//        assertEquals(response200 + "\r\n" + body, response.getResponseHeader());
     }
 
     @Test
     public void testBuildResponseWithStatusAndHeader() throws Exception {
         response.addStatusLine(status200);
         response.addHeader(htmlContentHeader);
-        assertEquals(responseHeader200, response.getResponseHeader());
+        assertEquals(responseWithHeader200, response.getResponseHeader());
     }
 
+    @Test
+    public void testBuildResponseWithStatusAndMultipleHeaders() throws Exception {
+        response.addStatusLine(status200);
+        response.addHeader(htmlContentHeader);
+        response.addHeader(allowHeader);
+        assertEquals(responseWithHeaders200, response.getResponseHeader());
+    }
+
+    @Test
+    public void testBuildResponseWithBody() throws Exception {
+        response.addBody(body);
+        assertEquals(body, response.getBody());
+    }
 }
