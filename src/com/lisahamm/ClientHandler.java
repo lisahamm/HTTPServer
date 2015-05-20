@@ -36,9 +36,10 @@ public class ClientHandler extends Thread {
                 out.flush();
                 out.writeBytes(response + "\r\n");
                 out.flush();
-                out.write(body);
-                out.flush();
-
+                if (body != null) {
+                    out.write(body);
+                    out.flush();
+                }
                 in.close();
                 out.close();
             }
