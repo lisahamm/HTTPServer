@@ -15,7 +15,8 @@ public class ServerMain {
         } else {
             portNumber = Integer.parseInt(args[0]);
         }
-        Server server = new Server(portNumber);
+        Router router = new CobSpecRouter();
+        Server server = new Server(portNumber, router);
         server.run();
     }
 }

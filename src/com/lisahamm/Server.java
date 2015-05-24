@@ -9,9 +9,11 @@ public class Server implements Runnable {
     private boolean running = true;
     private ServerSocket serverSocket;
     private Socket clientSocket;
+    private Router router;
 
-    public Server(int portNumber) {
+    public Server(int portNumber, Router router) {
         this.portNumber = portNumber;
+        this.router = router;
     }
 
     public void run() {
@@ -27,7 +29,7 @@ public class Server implements Runnable {
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(clientSocket.getInputStream()));
 
-                ClientHandler clientHandler = new ClientHandler(in, out);
+                ClientHandler clientHandler = new ClientHandler(in, out, router);
                 clientHandler.start();
             }
         } catch (IOException e) {
