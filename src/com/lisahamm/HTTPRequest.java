@@ -2,7 +2,7 @@ package com.lisahamm;
 
 import java.util.Map;
 
-public class HTTPRequest {
+public class HTTPRequest implements Request {
     private String requestMethod;
     private String requestURI;
     private String httpVersion;
