@@ -9,6 +9,10 @@ import java.util.List;
 public class RootHandler implements RequestHandler {
     private DirectoryManager directoryManager;
     public static final String uri = "/";
+    private static String code200 = "200";
+    private static String code405 = "405";
+    private static String contentTypeHTML = "Content-Type: text/html";
+
 
     public RootHandler(DirectoryManager directoryManager) {
         this.directoryManager = directoryManager;
@@ -21,14 +25,14 @@ public class RootHandler implements RequestHandler {
         if (requestURI.equals(this.uri)) {
             switch(requestMethod) {
                 case "GET":
-                    response.addStatusLine("200");
-                    response.addHeader("Content-Type: text/html");
+                    response.addStatusLine(code200);
+                    response.addHeader(contentTypeHTML);
                     List<String> publicFiles = directoryManager.buildDirectoryContents();
                     String html = addHtmlLinks(publicFiles);
                     response.addBody(html.getBytes());
                    break;
                 default:
-                    response.addStatusLine("405");
+                    response.addStatusLine(code405);
                     break;
             }
             return true;
