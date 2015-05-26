@@ -2,6 +2,8 @@ package com.lisahamm;
 
 public class FormHandler implements RequestHandler {
     public static final String uri = "/form";
+    private static String code200 = "200";
+    private static String code405 = "405";
 
     public boolean handle(Request request, ResponseBuilder response) {
         String requestMethod = request.getRequestMethod();
@@ -10,17 +12,17 @@ public class FormHandler implements RequestHandler {
         if (requestURI.equals(this.uri)) {
             switch(requestMethod) {
                 case "GET":
-                    response.addStatusLine("200");
+                    response.addStatusLine(code200);
                     response.addHeader("Content-Type: text/plain");
                     break;
                 case "POST":
-                    response.addStatusLine("200");
+                    response.addStatusLine(code200);
                     break;
                 case "PUT":
-                    response.addStatusLine("200");
+                    response.addStatusLine(code200);
                     break;
                 default:
-                    response.addStatusLine("405");
+                    response.addStatusLine(code405);
                     break;
             }
             return true;
