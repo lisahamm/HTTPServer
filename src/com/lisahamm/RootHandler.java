@@ -14,7 +14,7 @@ public class RootHandler implements RequestHandler {
         this.directoryManager = directoryManager;
     }
 
-    public boolean handle(HTTPRequest request, ResponseBuilder response) {
+    public boolean handle(Request request, ResponseBuilder response) {
         String requestMethod = request.getRequestMethod();
         String requestURI = request.getRequestURI();
 

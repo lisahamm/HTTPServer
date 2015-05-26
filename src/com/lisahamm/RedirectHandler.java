@@ -10,7 +10,7 @@ public class RedirectHandler implements RequestHandler {
     public static final String uri = "/redirect";
 
 
-    public boolean handle(HTTPRequest request, ResponseBuilder response) {
+    public boolean handle(Request request, ResponseBuilder response) {
         String requestMethod = request.getRequestMethod();
         String requestURI = request.getRequestURI();
 

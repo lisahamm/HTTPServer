@@ -1,5 +1,5 @@
 package com.lisahamm;
 
 public interface RequestHandler {
-    boolean handle(HTTPRequest request, ResponseBuilder response);
+    boolean handle(Request request, ResponseBuilder response);
 }

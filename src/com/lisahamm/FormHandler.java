@@ -3,7 +3,7 @@ package com.lisahamm;
 public class FormHandler implements RequestHandler {
     public static final String uri = "/form";
 
-    public boolean handle(HTTPRequest request, ResponseBuilder response) {
+    public boolean handle(Request request, ResponseBuilder response) {
         String requestMethod = request.getRequestMethod();
         String requestURI = request.getRequestURI();
 

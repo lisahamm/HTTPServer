@@ -3,7 +3,7 @@ package com.lisahamm;
 public class MethodOptionsHandler implements RequestHandler {
     public static final String uri = "/method_options";
 
-    public boolean handle(HTTPRequest request, ResponseBuilder response) {
+    public boolean handle(Request request, ResponseBuilder response) {
         String requestMethod = request.getRequestMethod();
         String requestURI = request.getRequestURI();
 
