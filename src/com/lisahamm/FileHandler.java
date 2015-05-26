@@ -9,7 +9,7 @@ public class FileHandler implements RequestHandler {
         this.fileManager = fileManager;
     }
 
-    public boolean handle(HTTPRequest request, ResponseBuilder response) {
+    public boolean handle(Request request, ResponseBuilder response) {
         String requestMethod = request.getRequestMethod();
         String requestURI = request.getRequestURI();
         String fileName = requestURI.substring(1);

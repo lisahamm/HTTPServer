@@ -9,10 +9,12 @@ import java.io.PrintWriter;
 public class ClientHandler extends Thread {
     private BufferedReader in;
     private DataOutputStream out;
+    private Router router;
 
-    public ClientHandler(BufferedReader in, DataOutputStream out) {
+    public ClientHandler(BufferedReader in, DataOutputStream out, Router router) {
         this.in = in;
         this.out = out;
+        this.router = router;
     }
 
     public void run() {
@@ -23,8 +25,7 @@ public class ClientHandler extends Thread {
                 HTTPRequest request = parser.generateParsedRequest(rawRequest);
                 ResponseBuilder responseBuilder = new ResponseBuilder();
 
-                RequestRouter router = new RequestRouter();
-                router.route(request, responseBuilder);
+                router.invoke(request, responseBuilder);
 
                 String response = responseBuilder.getResponseHeader();
                 byte[] body = responseBuilder.getBody();
