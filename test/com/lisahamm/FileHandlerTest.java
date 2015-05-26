@@ -36,9 +36,9 @@ public class FileHandlerTest {
         HTTPRequest validRequest = generateRequest("GET", "/image.gif");
         boolean isHandled = fileHandler.handle(validRequest, response);
         assertTrue(response.getResponseHeader().contains("HTTP/1.1 200 OK\r\n"));
-//        assertTrue(response.getResponseHeader().contains("Content-Type: image/gif\r\n"));
-//        assertTrue(response.getBody().length > 0);
-//        assertTrue(isHandled);
+        assertTrue(response.getResponseHeader().contains("Content-Type: image/gif\r\n"));
+        assertTrue(response.getBody().length > 0);
+        assertTrue(isHandled);
     }
 
     @Test
