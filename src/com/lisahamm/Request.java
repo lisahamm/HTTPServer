@@ -9,7 +9,7 @@ public interface Request {
 
     String getHTTPVersion();
 
-    String getHeaders();
+    Map<String, String> getHeaders();
 
     String getBody();
 

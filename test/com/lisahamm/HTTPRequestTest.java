@@ -11,6 +11,7 @@ public class HTTPRequestTest {
     private HTTPRequest request;
     private Map<String, String> parsedComponents;
     private Map<String, String> params;
+    private Map<String, String> headers;
 
     @Before
     public void setUp() throws Exception {
@@ -20,7 +21,8 @@ public class HTTPRequestTest {
         parsedComponents.put("httpVersion", "HTTP/1.1");
         params = new HashMap<>();
         params.put("variable1Key", "variable1Value");
-        request = new HTTPRequest(parsedComponents, params);
+        headers = new HashMap<>();
+        request = new HTTPRequest(parsedComponents, params, headers);
     }
 
     @Test

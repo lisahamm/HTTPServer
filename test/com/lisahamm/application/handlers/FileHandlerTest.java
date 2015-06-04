@@ -1,10 +1,8 @@
 package com.lisahamm.application.handlers;
 
-import com.lisahamm.FileManager;
-import com.lisahamm.HTTPRequest;
-import com.lisahamm.RequestHandler;
-import com.lisahamm.ResponseBuilder;
+import com.lisahamm.*;
 import com.lisahamm.application.handlers.FileHandler;
+import com.lisahamm.mocks.MockHTTPRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +26,7 @@ public class FileHandlerTest {
 
     @Test
     public void testItHandlesRequestForFileInPublicDirectory() throws Exception {
-        HTTPRequest validRequest = generateRequest("GET", "/file1");
+        Request validRequest = generateRequest("GET", "/file1");
         boolean isHandled = fileHandler.handle(validRequest, response);
         assertTrue(response.getResponseHeader().contains("HTTP/1.1 200 OK\r\n"));
         assertTrue(response.getResponseHeader().contains("Content-Type: text/plain\r\n"));
@@ -38,7 +36,7 @@ public class FileHandlerTest {
 
     @Test
     public void testHandlesResponseForImageInPublicDirectory() throws Exception {
-        HTTPRequest validRequest = generateRequest("GET", "/image.gif");
+        Request validRequest = generateRequest("GET", "/image.gif");
         boolean isHandled = fileHandler.handle(validRequest, response);
         assertTrue(response.getResponseHeader().contains("HTTP/1.1 200 OK\r\n"));
         assertTrue(response.getResponseHeader().contains("Content-Type: image/gif\r\n"));
@@ -48,7 +46,7 @@ public class FileHandlerTest {
 
     @Test
     public void testItHandlesRequestForMethodNotAllowed() throws Exception {
-        HTTPRequest invalidRequest = generateRequest("POST", "/file1");
+        Request invalidRequest = generateRequest("POST", "/file1");
         boolean isHandled = fileHandler.handle(invalidRequest, response);
         assertTrue(response.getResponseHeader().contains("HTTP/1.1 405 Method Not Allowed"));
         assertTrue(isHandled);
@@ -56,17 +54,16 @@ public class FileHandlerTest {
 
     @Test
     public void testDoesNotHandleRequestIfUriDoesNotExistInDirectory() throws Exception {
-        HTTPRequest invalidRequest = generateRequest("GET", "/file1000");
+        Request invalidRequest = generateRequest("GET", "/file1000");
         boolean isHandled = fileHandler.handle(invalidRequest, response);
         assertFalse(isHandled);
     }
 
-    private HTTPRequest generateRequest(String method, String uri) {
-        Map<String, String> parsedComponents = new HashMap<>();
-        parsedComponents.put("requestMethod", method.toUpperCase());
-        parsedComponents.put("requestURI", uri);
-        parsedComponents.put("httpVersion", "HTTP/1.1");
-        return new HTTPRequest(parsedComponents, new HashMap<>());
+    private MockHTTPRequest generateRequest(String method, String uri) {
+        MockHTTPRequest request = new MockHTTPRequest();
+        request.requestMethod = method.toUpperCase();
+        request.requestURI = uri;
+        return request;
     }
 
     public class MockFileManager implements FileManager {

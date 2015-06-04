@@ -42,8 +42,10 @@ public class RequestParserTest {
 
     @Test
     public void testRequestHeaderIsParsed() throws Exception {
+        String headerKey = "Host";
+        String headerValue = "0.0.0.0";
         HTTPRequest request = requestParser.generateParsedRequest(rawRequest);
-        assertEquals("Host: 0.0.0.0", request.getHeaders());
+        assertEquals(headerValue, request.getHeaders().get(headerKey));
     }
 
     @Test

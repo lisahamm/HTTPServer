@@ -2,11 +2,15 @@ package com.lisahamm.mocks;
 
 import com.lisahamm.Request;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MockHTTPRequest implements Request {
     public String requestMethod = null;
     public String requestURI = null;
+    public Map<String, String> params = new HashMap<>();
+    public Map<String, String> headers = new HashMap<>();
+    public String body = null;
 
     public String getRequestMethod() {
         return requestMethod;
@@ -20,16 +24,16 @@ public class MockHTTPRequest implements Request {
         return "HTTP/1.1";
     }
 
-    public String getHeaders() {
-        return null;
+    public Map<String, String> getHeaders() {
+        return headers;
     }
 
     public String getBody() {
-        return null;
+        return body;
     }
 
     public Map<String, String> getParams() {
-        return null;
+        return params;
     }
 
 }

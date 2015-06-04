@@ -9,13 +9,14 @@ public class RequestParser {
     private Map<String,String> parsedRequestComponents = new HashMap<>();
     private String uriWithoutParams;
     private Map<String, String> params;
+    private Map<String, String> headers;
 
     public RequestParser() {
     }
 
     public HTTPRequest generateParsedRequest(String rawRequest) {
         parseRequest(rawRequest);
-        return new HTTPRequest(parsedRequestComponents, params);
+        return new HTTPRequest(parsedRequestComponents, params, headers);
     }
 
     private void parseRequest(String rawRequest) {
@@ -24,7 +25,9 @@ public class RequestParser {
         parseRequestLine(messageComponents[0]);
         if (messageComponents.length > 1) {
             messageComponents = messageComponents[1].split("\r\n\r\n");
-            parsedRequestComponents.put("headers", messageComponents[0]);
+
+            headers = getHeadersHash(messageComponents[0]);
+
             if (messageComponents.length > 1) {
                 parsedRequestComponents.put("body", messageComponents[messageComponents.length - 1]);
             }
@@ -68,5 +71,16 @@ public class RequestParser {
             paramsHash.put(decodeString(paramComponents[0]), decodeString(paramComponents[1]));
         }
         return paramsHash;
+    }
+
+    public HashMap<String, String> getHeadersHash(String headers) {
+        HashMap<String, String> parsedHeaders = new HashMap<>();
+
+        String[] splitHeaders = headers.split("\r\n");
+        for (String header : splitHeaders) {
+            String[] splitHeader = header.split(":");
+            parsedHeaders.put(splitHeader[0].trim(), splitHeader[1].trim());
+        }
+        return parsedHeaders;
     }
 }

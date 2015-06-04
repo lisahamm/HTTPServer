@@ -4,7 +4,6 @@ package com.lisahamm.application.handlers;
 import com.lisahamm.Request;
 import com.lisahamm.RequestHandler;
 import com.lisahamm.ResponseBuilder;
-import com.lisahamm.application.handlers.ParametersHandler;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,7 +60,7 @@ public class ParametersHandlerTest {
             return "HTTP/1.1";
         }
 
-        public String getHeaders() {
+        public Map<String, String> getHeaders() {
             return null;
         }
 
