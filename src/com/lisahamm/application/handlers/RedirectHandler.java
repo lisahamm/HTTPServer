@@ -1,4 +1,8 @@
-package com.lisahamm;
+package com.lisahamm.application.handlers;
+
+import com.lisahamm.Request;
+import com.lisahamm.RequestHandler;
+import com.lisahamm.ResponseBuilder;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

@@ -1,5 +1,10 @@
-package com.lisahamm;
+package com.lisahamm.application.handlers;
 
+
+import com.lisahamm.DirectoryManager;
+import com.lisahamm.Request;
+import com.lisahamm.RequestHandler;
+import com.lisahamm.ResponseBuilder;
 
 import java.io.File;
 import java.nio.charset.Charset;

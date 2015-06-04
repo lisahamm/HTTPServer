@@ -1,4 +1,9 @@
-package com.lisahamm;
+package com.lisahamm.application.handlers;
+
+import com.lisahamm.FileManager;
+import com.lisahamm.Request;
+import com.lisahamm.RequestHandler;
+import com.lisahamm.ResponseBuilder;
 
 import java.io.File;
 

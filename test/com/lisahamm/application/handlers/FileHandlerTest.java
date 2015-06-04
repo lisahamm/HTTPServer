@@ -1,5 +1,10 @@
-package com.lisahamm;
+package com.lisahamm.application.handlers;
 
+import com.lisahamm.FileManager;
+import com.lisahamm.HTTPRequest;
+import com.lisahamm.RequestHandler;
+import com.lisahamm.ResponseBuilder;
+import com.lisahamm.application.handlers.FileHandler;
 import org.junit.Before;
 import org.junit.Test;
 

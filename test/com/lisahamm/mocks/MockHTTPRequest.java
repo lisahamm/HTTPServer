@@ -1,4 +1,6 @@
-package com.lisahamm;
+package com.lisahamm.mocks;
+
+import com.lisahamm.Request;
 
 import java.util.Map;
 

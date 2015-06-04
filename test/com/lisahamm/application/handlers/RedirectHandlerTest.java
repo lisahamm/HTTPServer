@@ -1,9 +1,12 @@
-package com.lisahamm;
+package com.lisahamm.application.handlers;
 
+import com.lisahamm.Request;
+import com.lisahamm.RequestHandler;
+import com.lisahamm.ResponseBuilder;
+import com.lisahamm.application.handlers.RedirectHandler;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;

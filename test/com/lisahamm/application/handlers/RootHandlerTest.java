@@ -1,5 +1,8 @@
-package com.lisahamm;
+package com.lisahamm.application.handlers;
 
+import com.lisahamm.DirectoryManager;
+import com.lisahamm.mocks.MockHTTPRequest;
+import com.lisahamm.ResponseBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
