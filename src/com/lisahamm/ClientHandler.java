@@ -3,8 +3,6 @@ package com.lisahamm;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-
 
 public class ClientHandler extends Thread {
     private BufferedReader in;
@@ -19,10 +17,15 @@ public class ClientHandler extends Thread {
 
     public void run() {
         try {
-            String rawRequest = in.readLine();
-            if (rawRequest != null) {
+            StringBuilder rawRequest = new StringBuilder();
+
+            do {
+                rawRequest.append((char) in.read());
+            } while (in.ready());
+
+            if (rawRequest.length() > 1) {
                 RequestParser parser = new RequestParser();
-                HTTPRequest request = parser.generateParsedRequest(rawRequest);
+                HTTPRequest request = parser.generateParsedRequest(rawRequest.toString());
                 ResponseBuilder responseBuilder = new ResponseBuilder();
 
                 router.invoke(request, responseBuilder);
@@ -37,10 +40,12 @@ public class ClientHandler extends Thread {
                 out.flush();
                 out.writeBytes(response + "\r\n");
                 out.flush();
+
                 if (body != null) {
                     out.write(body);
                     out.flush();
                 }
+
                 in.close();
                 out.close();
             }
