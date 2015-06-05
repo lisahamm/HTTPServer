@@ -6,6 +6,7 @@ import com.lisahamm.RequestHandler;
 import com.lisahamm.ResponseBuilder;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class FileHandler implements RequestHandler {
     private FileManager fileManager;
@@ -20,12 +21,22 @@ public class FileHandler implements RequestHandler {
         String fileName = requestURI.substring(1);
 
         if (fileManager.isFileFound(fileName)) {
+
             switch(requestMethod) {
                 case "GET":
-                    response.addStatusLine("200");
+                    byte[] body;
+                    if (request.getHeaders().containsKey("Range")) {
+                        response.addStatusLine("206");
+                        body = getPartialContents(request, fileManager);
+                    } else {
+                        response.addStatusLine("200");
+                        body = fileManager.getFileContents(requestURI);
+                    }
+                    int bodyLength = body.length;
+                    response.addHeader("Content-Length: " + bodyLength);
                     String mimeType = fileManager.getContentType(requestURI);
                     response.addHeader("Content-Type: " + mimeType);
-                    response.addBody(fileManager.getFileContents(requestURI));
+                    response.addBody(body);
                     break;
                 default:
                     response.addStatusLine("405");
@@ -34,5 +45,14 @@ public class FileHandler implements RequestHandler {
             return true;
         }
         return false;
+    }
+
+    private String parseRange(Request request) {
+        return request.getHeaders().get("Range").split("=") [1];
+    }
+
+    private byte[] getPartialContents(Request request, FileManager fileManager) {
+        String range = parseRange(request);
+        return fileManager.getPartialFileContents(request.getRequestURI(), range);
     }
 }
