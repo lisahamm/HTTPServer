@@ -1,64 +1,70 @@
 package com.lisahamm;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class ClientHandler extends Thread {
-    private BufferedReader in;
-    private DataOutputStream out;
+    private ClientConnection clientConnection;
+    private HTTPMessageFactory messageFactory;
     private Router router;
+    private String crlf = "\r\n";
 
-    public ClientHandler(BufferedReader in, DataOutputStream out, Router router) {
-        this.in = in;
-        this.out = out;
+    public ClientHandler(ClientConnection clientConnection, HTTPMessageFactory messageFactory, Router router) {
+        this.clientConnection = clientConnection;
+        this.messageFactory = messageFactory;
         this.router = router;
     }
 
     public void run() {
         try {
-            StringBuilder rawRequest = new StringBuilder();
+            clientConnection.openInputReader();
+            clientConnection.openOutputStream();
 
-            do {
-                rawRequest.append((char) in.read());
-            } while (in.ready());
+            String rawRequest = readRawRequest();
 
             if (rawRequest.length() > 1) {
-
-                RequestParser parser = new RequestParser();
-                HTTPRequest request = parser.generateParsedRequest(rawRequest.toString());
-                ResponseBuilder responseBuilder = new ResponseBuilder();
+                HTTPRequest request = messageFactory.request(rawRequest);
+                ResponseBuilder responseBuilder = messageFactory.response();
 
                 router.invoke(request, responseBuilder);
 
-                String response = responseBuilder.getResponseHeader();
-                byte[] body = responseBuilder.getBody();
-                if(response.length() < 2) {
-                    response = "HTTP/1.1 404 Not Found\r\n";
-                    body = "".getBytes();
-                }
+                checkFor404(responseBuilder);
 
-                out.flush();
-                out.writeBytes(response + "\r\n");
-                out.flush();
-
-                if (body != null) {
-                    out.write(body);
-                    out.flush();
-                }
-
-                in.close();
-                out.close();
+                sendResponse(responseBuilder);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } finally {
             try {
-                in.close();
-                out.close();
+                clientConnection.close();
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
+        }
+    }
+
+    private String readRawRequest() throws IOException {
+        StringBuilder rawRequest = new StringBuilder();
+
+        do {
+            rawRequest.append((char) clientConnection.readInput());
+        } while (clientConnection.inputReaderIsReady());
+
+        return rawRequest.toString();
+    }
+
+    private void sendResponse(ResponseBuilder responseBuilder) throws IOException {
+        byte[] body = responseBuilder.getBody();
+
+        clientConnection.writeToOutputStream(responseBuilder.getResponseHeader() + crlf);
+
+        if (body != null) {
+            clientConnection.writeToOutputStream(body);
+        }
+    }
+
+    private void checkFor404(ResponseBuilder responseBuilder) {
+        if (responseBuilder.getResponseHeader().length() < 2) {
+            responseBuilder.addStatusLine("404");
         }
     }
 }
