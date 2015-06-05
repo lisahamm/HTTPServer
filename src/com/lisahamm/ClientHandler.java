@@ -24,6 +24,7 @@ public class ClientHandler extends Thread {
             } while (in.ready());
 
             if (rawRequest.length() > 1) {
+
                 RequestParser parser = new RequestParser();
                 HTTPRequest request = parser.generateParsedRequest(rawRequest.toString());
                 ResponseBuilder responseBuilder = new ResponseBuilder();
