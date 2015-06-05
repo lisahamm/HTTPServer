@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MockHTTPRequest implements Request {
-    public String requestMethod = null;
-    public String requestURI = null;
-    public Map<String, String> params = new HashMap<>();
-    public Map<String, String> headers = new HashMap<>();
-    public String body = null;
+    public String requestMethod;
+    public String requestURI;
+    public Map<String, String> params;
+    public Map<String, String> headers;
+    public String body;
 
     public String getRequestMethod() {
         return requestMethod;
