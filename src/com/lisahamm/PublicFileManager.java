@@ -6,6 +6,7 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PublicFileManager implements DirectoryManager, FileManager {
@@ -41,6 +42,29 @@ public class PublicFileManager implements DirectoryManager, FileManager {
             e.printStackTrace();
         }
         return data;
+    }
+
+    public byte[] getPartialFileContents(String requestURI, String range) {
+        byte[] fileContents = getFileContents(requestURI);
+        int fileLength = fileContents.length;
+
+        String[] rangeValues = range.split("-");
+
+        int startIndex;
+        int endIndex;
+
+        if (range.lastIndexOf("-") == range.length()-1) {
+            startIndex = Integer.parseInt(rangeValues[0]);
+            endIndex = fileLength - 1;
+        } else if (range.lastIndexOf("-") == 0) {
+            startIndex = (fileLength) - Integer.parseInt(rangeValues[1]);
+            endIndex = fileLength - 1;
+        } else {
+            startIndex = Integer.parseInt(rangeValues[0]);
+            endIndex = Integer.parseInt(rangeValues[1]);
+        }
+
+        return Arrays.copyOfRange(fileContents, startIndex, endIndex + 1);
     }
 
     public String getContentType(String requestURI) {
