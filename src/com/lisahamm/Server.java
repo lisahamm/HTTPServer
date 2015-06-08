@@ -2,7 +2,6 @@ package com.lisahamm;
 
 import java.io.*;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 public class Server implements Runnable {
     private int portNumber = 0;
@@ -23,8 +22,8 @@ public class Server implements Runnable {
                 ClientConnection clientConnection = new ClientConnection(serverSocket.accept());
                 System.out.println("Connection made with " + clientConnection.getSocket());
 
-                ClientHandler clientHandler = new ClientHandler(clientConnection, router);
-                clientHandler.start();
+                HttpTransaction httpTransaction = new HttpTransaction(clientConnection, new RequestParser(), new ResponseBuilder(), router);
+                httpTransaction.start();
             }
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "

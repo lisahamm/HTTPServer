@@ -4,12 +4,17 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class ClientHandler extends Thread {
-    private ClientConnection clientConnection;
+public class HttpTransaction extends Thread {
+    private ConnectionIO clientConnection;
+    private RequestParser parser;
+    private ResponseBuilder responseBuilder;
     private Router router;
 
-    public ClientHandler(ClientConnection clientConnection, Router router) {
+    public HttpTransaction(ConnectionIO clientConnection, RequestParser parser,
+                           ResponseBuilder responseBuilder, Router router) {
         this.clientConnection = clientConnection;
+        this.parser = parser;
+        this.responseBuilder = responseBuilder;
         this.router = router;
     }
 
@@ -25,10 +30,7 @@ public class ClientHandler extends Thread {
             } while (clientConnection.inputReaderIsReady());
 
             if (rawRequest.length() > 1) {
-
-                RequestParser parser = new RequestParser();
                 HTTPRequest request = parser.generateParsedRequest(rawRequest.toString());
-                ResponseBuilder responseBuilder = new ResponseBuilder();
 
                 router.invoke(request, responseBuilder);
 
