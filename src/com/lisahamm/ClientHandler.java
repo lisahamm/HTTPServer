@@ -49,9 +49,10 @@ public class ClientHandler extends Thread {
         String responseHeader = response.getResponseHeader();
         byte[] body = response.getBody();
 
-        clientConnection.writeToOutputStream(responseHeader + "\r\n");
+        clientConnection.writeToOutputStream(responseHeader);
 
         if (body != null) {
+            clientConnection.writeToOutputStream(response.CRLF);
             clientConnection.writeToOutputStream(body);
         }
     }

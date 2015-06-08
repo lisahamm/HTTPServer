@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResponseBuilder {
+    public static final String CRLF = "\r\n";
     private String httpVersion = "HTTP/1.1";
-    private String CRLF = "\r\n";
     private String space = " ";
     private StringBuilder responseHeader = new StringBuilder();
     private String statusLine;
