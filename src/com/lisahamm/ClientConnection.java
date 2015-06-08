@@ -50,6 +50,5 @@ public class ClientConnection {
     public void close() throws IOException {
         inputReader.close();
         outputStream.close();
-        clientSocket.close();
     }
 }

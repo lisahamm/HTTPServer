@@ -2,13 +2,13 @@ package com.lisahamm;
 
 import java.io.IOException;
 
-public class ClientHandler extends Thread {
+public class ClientRequestHandler extends Thread {
     private ClientConnection clientConnection;
     private HTTPMessageFactory messageFactory;
     private Router router;
     private String crlf = "\r\n";
 
-    public ClientHandler(ClientConnection clientConnection, HTTPMessageFactory messageFactory, Router router) {
+    public ClientRequestHandler(ClientConnection clientConnection, HTTPMessageFactory messageFactory, Router router) {
         this.clientConnection = clientConnection;
         this.messageFactory = messageFactory;
         this.router = router;
@@ -21,13 +21,11 @@ public class ClientHandler extends Thread {
 
             String rawRequest = readRawRequest();
 
-            if (rawRequest.length() > 1) {
+            if (rawRequest.length() > 5) {
                 HTTPRequest request = messageFactory.request(rawRequest);
                 ResponseBuilder responseBuilder = messageFactory.response();
 
                 router.invoke(request, responseBuilder);
-
-                checkFor404(responseBuilder);
 
                 sendResponse(responseBuilder);
             }
@@ -55,16 +53,11 @@ public class ClientHandler extends Thread {
     private void sendResponse(ResponseBuilder responseBuilder) throws IOException {
         byte[] body = responseBuilder.getBody();
 
-        clientConnection.writeToOutputStream(responseBuilder.getResponseHeader() + crlf);
+        clientConnection.writeToOutputStream(responseBuilder.getResponseHeader());
 
         if (body != null) {
+            clientConnection.writeToOutputStream(crlf);
             clientConnection.writeToOutputStream(body);
-        }
-    }
-
-    private void checkFor404(ResponseBuilder responseBuilder) {
-        if (responseBuilder.getResponseHeader().length() < 2) {
-            responseBuilder.addStatusLine("404");
         }
     }
 }

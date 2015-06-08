@@ -27,7 +27,11 @@ public class ResponseBuilder {
 
     public String getResponseHeader() {
         constructResponseHeader();
-        return responseHeader.toString();
+        if (responseHeader.toString().length() > 1 ) {
+            return responseHeader.toString();
+        } else {
+            return null;
+        }
     }
 
     public byte[] getBody() {
