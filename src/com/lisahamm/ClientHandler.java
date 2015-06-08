@@ -48,10 +48,6 @@ public class ClientHandler extends Thread {
     private void sendResponse(ResponseBuilder response) throws IOException {
         String responseHeader = response.getResponseHeader();
         byte[] body = response.getBody();
-        if(responseHeader.length() < 2) {
-            responseHeader = "HTTP/1.1 404 Not Found\r\n";
-            body = "".getBytes();
-        }
 
         clientConnection.writeToOutputStream(responseHeader + "\r\n");
 
