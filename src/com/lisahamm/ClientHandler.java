@@ -5,23 +5,24 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class ClientHandler extends Thread {
-    private BufferedReader in;
-    private DataOutputStream out;
+    private ClientConnection clientConnection;
     private Router router;
 
-    public ClientHandler(BufferedReader in, DataOutputStream out, Router router) {
-        this.in = in;
-        this.out = out;
+    public ClientHandler(ClientConnection clientConnection, Router router) {
+        this.clientConnection = clientConnection;
         this.router = router;
     }
 
     public void run() {
         try {
+            clientConnection.openInputReader();
+            clientConnection.openOutputStream();
+
             StringBuilder rawRequest = new StringBuilder();
 
             do {
-                rawRequest.append((char) in.read());
-            } while (in.ready());
+                rawRequest.append((char) clientConnection.readInput());
+            } while (clientConnection.inputReaderIsReady());
 
             if (rawRequest.length() > 1) {
 
@@ -37,8 +38,7 @@ public class ClientHandler extends Thread {
             System.out.println(e.getMessage());
         } finally {
             try {
-                in.close();
-                out.close();
+                clientConnection.close();
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
@@ -53,16 +53,10 @@ public class ClientHandler extends Thread {
             body = "".getBytes();
         }
 
-        out.flush();
-        out.writeBytes(responseHeader + "\r\n");
-        out.flush();
+        clientConnection.writeToOutputStream(responseHeader + "\r\n");
 
         if (body != null) {
-            out.write(body);
-            out.flush();
+            clientConnection.writeToOutputStream(body);
         }
-
-        in.close();
-        out.close();
     }
 }

@@ -8,7 +8,6 @@ public class Server implements Runnable {
     private int portNumber = 0;
     private boolean running = true;
     private ServerSocket serverSocket;
-    private Socket clientSocket;
     private Router router;
 
     public Server(int portNumber, Router router) {
@@ -21,15 +20,10 @@ public class Server implements Runnable {
             serverSocket = new ServerSocket(portNumber);
             System.out.println("Server is listening on port: " + portNumber);
             while (running) {
-                clientSocket = serverSocket.accept();
-                System.out.println("Connection made with " + clientSocket);
-                DataOutputStream out =
-                        new DataOutputStream(clientSocket.getOutputStream());
+                ClientConnection clientConnection = new ClientConnection(serverSocket.accept());
+                System.out.println("Connection made with " + clientConnection.getSocket());
 
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(clientSocket.getInputStream()));
-
-                ClientHandler clientHandler = new ClientHandler(in, out, router);
+                ClientHandler clientHandler = new ClientHandler(clientConnection, router);
                 clientHandler.start();
             }
         } catch (IOException e) {
@@ -38,7 +32,6 @@ public class Server implements Runnable {
             System.out.println(e.getMessage());
         } finally {
             try {
-                clientSocket.close();
                 serverSocket.close();
             } catch (IOException e) {
                 e.getMessage();
