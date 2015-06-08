@@ -31,24 +31,7 @@ public class ClientHandler extends Thread {
 
                 router.invoke(request, responseBuilder);
 
-                String response = responseBuilder.getResponseHeader();
-                byte[] body = responseBuilder.getBody();
-                if(response.length() < 2) {
-                    response = "HTTP/1.1 404 Not Found\r\n";
-                    body = "".getBytes();
-                }
-
-                out.flush();
-                out.writeBytes(response + "\r\n");
-                out.flush();
-
-                if (body != null) {
-                    out.write(body);
-                    out.flush();
-                }
-
-                in.close();
-                out.close();
+                sendResponse(responseBuilder);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -60,5 +43,26 @@ public class ClientHandler extends Thread {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    private void sendResponse(ResponseBuilder response) throws IOException {
+        String responseHeader = response.getResponseHeader();
+        byte[] body = response.getBody();
+        if(responseHeader.length() < 2) {
+            responseHeader = "HTTP/1.1 404 Not Found\r\n";
+            body = "".getBytes();
+        }
+
+        out.flush();
+        out.writeBytes(responseHeader + "\r\n");
+        out.flush();
+
+        if (body != null) {
+            out.write(body);
+            out.flush();
+        }
+
+        in.close();
+        out.close();
     }
 }
