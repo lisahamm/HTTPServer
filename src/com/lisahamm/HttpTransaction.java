@@ -20,20 +20,13 @@ public class HttpTransaction extends Thread {
 
     public void run() {
         try {
-            clientConnection.openInputReader();
-            clientConnection.openOutputStream();
+            openClientConnectionIO();
 
-            StringBuilder rawRequest = new StringBuilder();
+            String rawRequest = readInRawRequest();
 
-            do {
-                rawRequest.append((char) clientConnection.readInput());
-            } while (clientConnection.inputReaderIsReady());
-
-            if (rawRequest.length() > 1) {
-                HTTPRequest request = parser.generateParsedRequest(rawRequest.toString());
-
+            if (requestIsValid(rawRequest)) {
+                HTTPRequest request = parser.generateParsedRequest(rawRequest);
                 router.invoke(request, responseBuilder);
-
                 sendResponse(responseBuilder);
             }
         } catch (IOException e) {
@@ -57,5 +50,22 @@ public class HttpTransaction extends Thread {
             clientConnection.writeToOutputStream(response.CRLF);
             clientConnection.writeToOutputStream(body);
         }
+    }
+
+    private void openClientConnectionIO() throws IOException {
+        clientConnection.openInputReader();
+        clientConnection.openOutputStream();
+    }
+
+    private String readInRawRequest() throws IOException {
+        StringBuilder rawRequest = new StringBuilder();
+        do {
+            rawRequest.append((char) clientConnection.readInput());
+        } while (clientConnection.inputReaderIsReady());
+        return rawRequest.toString();
+    }
+
+    private boolean requestIsValid(String rawRequest) {
+        return rawRequest.length() > 1;
     }
 }
