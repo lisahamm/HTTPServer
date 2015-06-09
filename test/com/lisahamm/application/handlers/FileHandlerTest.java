@@ -6,6 +6,7 @@ import com.lisahamm.mocks.MockHTTPRequest;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,13 +52,39 @@ public class FileHandlerTest {
     }
 
     @Test
-    public void testHandlesResponseForImageInPublicDirectory() throws Exception {
+    public void testHandlesRequestForImageInPublicDirectory() throws Exception {
         Request validRequest = generateRequest("GET", "/image.gif", headers);
         boolean isHandled = fileHandler.handle(validRequest, response);
         assertTrue(response.getResponseHeader().contains("HTTP/1.1 200 OK\r\n"));
         assertTrue(response.getResponseHeader().contains("Content-Type: image/gif\r\n"));
         assertTrue(response.getBody().length > 0);
         assertTrue(isHandled);
+    }
+
+    @Test
+    public void testHandlesPatchRequest() throws Exception {
+        headers.put("If-Match", "dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec");
+        headers.put("Content-Length", "15");
+        String body = "patched content";
+        Request validPatchRequest = generateRequestWithBody("PATCH", "/patch-content.txt", headers, body);
+
+        boolean isHandled = fileHandler.handle(validPatchRequest, response);
+
+        assertTrue(response.getResponseHeader().contains("HTTP/1.1 204 No Content"));
+//        assertTrue(response.getResponseHeader().contains("ETag"));
+//        assertTrue(response.getBody().toString().equals("patched content"));
+        assertTrue(isHandled);
+    }
+
+    @Test
+    public void testSha1Encoding() throws Exception {
+        FileManager fileManager = new MockFileManager();
+        FileHandler fileHandler = new FileHandler(fileManager);
+        String validEncoding = "dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec";
+
+        String encodingResult = fileHandler.sha1Encoding("default content".getBytes());
+
+        assertEquals(validEncoding, encodingResult);
     }
 
     @Test
@@ -83,16 +110,38 @@ public class FileHandlerTest {
         return request;
     }
 
+    private MockHTTPRequest generateRequestWithBody(String method, String uri, Map<String, String> headers, String body) {
+        MockHTTPRequest request = new MockHTTPRequest();
+        request.requestMethod = method.toUpperCase();
+        request.requestURI = uri;
+        request.headers = headers;
+        request.body = body;
+        return request;
+    }
+
+
     public class MockFileManager implements FileManager {
         public boolean isFileFound(String fileName) {
-            if (fileName.equals("file1") || fileName.equals("image.gif")) {
+            if (fileName.equals("file1") || fileName.equals("image.gif") || fileName.equals("patch-content.txt")) {
                 return true;
             }
             return false;
         }
 
+        public File getFile(String requestURI) {
+            return new File(requestURI);
+        }
+
+        public void overwriteFile(String requestURI, String newContents) {
+
+        }
+
         public byte[] getFileContents(String requestURI) {
-            return "file1 contents".getBytes();
+            if (requestURI.contains("patch-content.txt")) {
+                return "default content".getBytes();
+            } else {
+                return "file1 contents".getBytes();
+            }
         }
 
         public byte[] getPartialFileContents(String requestURI, String range) {

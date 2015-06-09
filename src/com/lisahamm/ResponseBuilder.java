@@ -46,10 +46,12 @@ public class ResponseBuilder {
     private Map<String, String> responseStatuses() {
         Map<String, String> statuses = new HashMap<>();
         statuses.put("200", "200 OK");
+        statuses.put("204", "204 No Content");
         statuses.put("206", "206 Partial Content");
         statuses.put("302", "302 Found");
         statuses.put("404", "404 Not Found");
         statuses.put("405", "405 Method Not Allowed");
+        statuses.put("412", "412 Precondition Failed");
         return statuses;
     }
 }

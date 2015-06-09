@@ -22,6 +22,20 @@ public class PublicFileManager implements DirectoryManager, FileManager {
         return directoryContents.contains(fileName);
     }
 
+    public File getFile(String requestURI) {
+        return new File(directoryPath + requestURI);
+    }
+
+    public void overwriteFile(String requestURI, String newContents) {
+        try {
+            FileWriter writer = new FileWriter(getFile(requestURI), false);
+            writer.write(newContents);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<String> buildDirectoryContents() {
         File f = new File(directoryPath);
         File[] files = f.listFiles();

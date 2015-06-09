@@ -1,6 +1,7 @@
 package com.lisahamm;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 
 public class Server implements Runnable {
@@ -17,6 +18,7 @@ public class Server implements Runnable {
     public void run() {
         try {
             serverSocket = new ServerSocket(portNumber);
+
             System.out.println("Server is listening on port: " + portNumber);
             while (running) {
                 ClientConnection clientConnection = new ClientConnection(serverSocket.accept());

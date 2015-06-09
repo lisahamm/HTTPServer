@@ -25,6 +25,9 @@ public class HttpTransaction extends Thread {
             String rawRequest = readInRawRequest();
 
             if (requestIsValid(rawRequest)) {
+
+                System.out.println(rawRequest);
+
                 HTTPRequest request = parser.generateParsedRequest(rawRequest);
                 router.invoke(request, responseBuilder);
                 sendResponse(responseBuilder);
