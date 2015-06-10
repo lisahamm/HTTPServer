@@ -8,6 +8,7 @@ public class FormHandler implements RequestHandler {
     public static final String uri = "/form";
     private static String code200 = "200";
     private static String code405 = "405";
+    private String formData;
 
     public boolean handle(Request request, ResponseBuilder response) {
         String requestMethod = request.getRequestMethod();
@@ -18,11 +19,20 @@ public class FormHandler implements RequestHandler {
                 case "GET":
                     response.addStatusLine(code200);
                     response.addHeader("Content-Type: text/plain");
+                    if (getFormData() != null) {
+                        response.addBody(getFormData().getBytes());
+                    }
                     break;
                 case "POST":
+                    formData = request.getBody();
                     response.addStatusLine(code200);
                     break;
                 case "PUT":
+                    formData = request.getBody();
+                    response.addStatusLine(code200);
+                    break;
+                case "DELETE":
+                    formData = null;
                     response.addStatusLine(code200);
                     break;
                 default:
@@ -32,5 +42,9 @@ public class FormHandler implements RequestHandler {
             return true;
         }
         return false;
+    }
+
+    public String getFormData() {
+        return this.formData;
     }
 }
