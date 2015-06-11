@@ -5,6 +5,7 @@ import java.net.FileNameMap;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AppResourceManager {
     private Filer fileManager;
@@ -21,28 +22,20 @@ public class AppResourceManager {
         return fileManager.getFileContents(publicDirectoryPath + uri);
     }
 
-    public byte[] getPartialFileContents(String uri, String range) {
+    public int getFileSize(String uri) {
         String filePath = publicDirectoryPath + uri;
+        return (int) fileManager.getSize(filePath);
+    }
 
-        int fileLength = (int) fileManager.getSize(filePath);
-
-        String[] rangeValues = range.split("-");
-
-        int startIndex;
-        int endIndex;
-
-        if (range.lastIndexOf("-") == range.length()-1) {
-            startIndex = Integer.parseInt(rangeValues[0]);
-            endIndex = fileLength - 1;
-        } else if (range.lastIndexOf("-") == 0) {
-            startIndex = (fileLength) - Integer.parseInt(rangeValues[1]);
-            endIndex = fileLength - 1;
-        } else {
-            startIndex = Integer.parseInt(rangeValues[0]);
-            endIndex = Integer.parseInt(rangeValues[1]);
+    public byte[] getPartialFileContents(String uri, Map<String, Integer> rangeBoundaries) {
+        String filePath = publicDirectoryPath + uri;
+        Integer startIndex = rangeBoundaries.get("startIndex");
+        Integer endIndex = rangeBoundaries.get("endIndex");
+        byte[] partialContent = null;
+        if (startIndex != null && endIndex != null) {
+            partialContent = fileManager.getPartialFileContents(filePath, startIndex, endIndex + 1);
         }
-
-        return fileManager.getPartialFileContents(filePath, startIndex, endIndex + 1);
+        return partialContent;
     }
 
     public String getContentType(String requestURI) {
@@ -66,6 +59,19 @@ public class AppResourceManager {
         fileManager.writeToFile(filePath, data);
     }
 
+    public boolean isPublicResourceFound(String uri) {
+        String filePath = publicDirectoryPath + uri;
+        return fileManager.isFileFound(filePath);
+    }
 
+    public void patchResource(String uri, String data) {
+        String filePath = publicDirectoryPath + uri;
+        fileManager.writeToFile(filePath, data);
+    }
+
+    public String retrieveData(String uri) {
+        String filePath = pathToDataStorage + uri;
+        return fileManager.getTextFromFile(filePath);
+    }
 
 }
