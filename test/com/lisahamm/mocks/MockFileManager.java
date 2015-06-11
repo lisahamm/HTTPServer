@@ -1,9 +1,9 @@
 package com.lisahamm.mocks;
 
-import com.lisahamm.Filer;
+import com.lisahamm.FileManager;
 import java.io.File;
 
-public class MockFileManager implements Filer {
+public class MockFileManager implements FileManager {
     public boolean fileFound = false;
     public boolean getFile = false;
     public boolean isWrittenToFile = false;
