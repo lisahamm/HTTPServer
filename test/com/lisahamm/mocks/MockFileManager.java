@@ -1,51 +1,60 @@
 package com.lisahamm.mocks;
 
-import com.lisahamm.FileManager;
-
+import com.lisahamm.Filer;
 import java.io.File;
 
-public class MockFileManager implements FileManager {
-    public boolean isFileFound(String fileName) {
-        if (fileName.equals("file1") || fileName.equals("image.gif") || fileName.equals("patch-content.txt")) {
-            return true;
-        }
-        return false;
+public class MockFileManager implements Filer {
+    public boolean fileFound = false;
+    public boolean getFile = false;
+    public boolean isWrittenToFile = false;
+    public boolean isfileContentRequested = false;
+    public boolean isFileTextRequested = false;
+    public boolean isPartialContentRequested = false;
+    public boolean isContentTypeRequested = false;
+    public boolean isSizeRequested = false;
+    public boolean isAppendedToFile = true;
+
+    public boolean isFileFound(String filePath) {
+        fileFound = true;
+        return fileFound;
     }
 
-    public File getFile(String requestURI) {
-        return new File(requestURI);
+    public File getFile(String filePath) {
+        getFile = true;
+        return null;
     }
 
-    public void overwriteFile(String requestURI, String newContents) {
-
+    public void writeToFile(String filePath, String data) {
+        isWrittenToFile = true;
     }
 
-    public byte[] getFileContents(String requestURI) {
-        if (requestURI.contains("patch-content.txt")) {
-            return "default content".getBytes();
-        } else {
-            return "file1 contents".getBytes();
-        }
+    public void appendToFile(String filePath, String data) {
+        isAppendedToFile = true;
     }
 
-    public byte[] getPartialFileContents(String requestURI, String range) {
-        return "file1".getBytes();
-    }
-
-    public String getContentType(String requestURI) {
-        if (requestURI.contains("image.gif")) {
-            return "image/gif";
-        }
-        return "text/plain";
-    }
-
-
-    public void writeToFile(String path, String data) {
-
+    public byte[] getFileContents(String filePath) {
+        isfileContentRequested = true;
+        return new byte[0];
     }
 
     public String getTextFromFile(String filePath) {
+        isFileTextRequested = true;
+        return "";
+    }
+
+    public byte[] getPartialFileContents(String filePath, int startIndex, int endIndex) {
+        isPartialContentRequested = true;
+        return new byte[0];
+    }
+
+    public String getContentType(String filePath) {
+        isContentTypeRequested = true;
         return null;
+    }
+
+    public long getSize(String filePath) {
+        isSizeRequested = true;
+        return 0;
     }
 }
 
