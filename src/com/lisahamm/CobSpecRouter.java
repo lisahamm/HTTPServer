@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CobSpecRouter implements Router {
+    private static String pathToPublicDirectory = "./../cob_spec/public";
+    private static String pathToDataStorage = "./../cob_spec/database";
     private List<RequestHandler> requestHandlers = new LinkedList<>();
 
     public CobSpecRouter() {
@@ -27,11 +29,12 @@ public class CobSpecRouter implements Router {
     }
 
     private void registerHandlers() {
-        String pathToPublicDirectory = "./../cob_spec/public";
-        registerHandler(new RootHandler(new PublicFileManager(pathToPublicDirectory)));
-        registerHandler(new FormHandler());
+        FileManager fileManager = new AppFileManager();
+        AppResourceManager resourceManager = new AppResourceManager(fileManager, pathToPublicDirectory, pathToDataStorage);
+        registerHandler(new RootHandler(resourceManager));
+        registerHandler(new FormHandler(resourceManager));
         registerHandler(new MethodOptionsHandler());
-        registerHandler(new FileHandler(new PublicFileManager(pathToPublicDirectory)));
+        registerHandler(new FileHandler(resourceManager));
         registerHandler(new RedirectHandler());
         registerHandler(new ParametersHandler());
         registerHandler(new NotFoundHandler());
