@@ -2,7 +2,7 @@ package com.lisahamm.application.handlers;
 
 
 import com.lisahamm.*;
-import sun.net.ResourceManager;
+
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -10,14 +10,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class RootHandler implements RequestHandler {
-    private AppResourceManager resourceManager;
+    private ResourceManager resourceManager;
     public static final String uri = "/";
     private static String code200 = "200";
     private static String code405 = "405";
     private static String contentTypeHTML = "Content-Type: text/html";
 
 
-    public RootHandler(AppResourceManager resourceManager) {
+    public RootHandler(ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
     }
 

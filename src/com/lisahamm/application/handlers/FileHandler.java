@@ -1,27 +1,25 @@
 package com.lisahamm.application.handlers;
 
-import com.lisahamm.FileManager;
-import com.lisahamm.Request;
-import com.lisahamm.RequestHandler;
-import com.lisahamm.ResponseBuilder;
+import com.lisahamm.*;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class FileHandler implements RequestHandler {
-    private FileManager fileManager;
+    private ResourceManager resourceManager;
 
-    public FileHandler(FileManager fileManager) {
-        this.fileManager = fileManager;
+    public FileHandler(ResourceManager resourceManager) {
+        this.resourceManager = resourceManager;
     }
 
     public boolean handle(Request request, ResponseBuilder response) {
         String requestMethod = request.getRequestMethod();
-        String fileName = request.getRequestURI().substring(1);
 
-        if (fileManager.isFileFound(fileName)) {
+        if (resourceManager.isPublicResourceFound(request.getRequestURI())) {
             switch(requestMethod) {
                 case "GET":
                     processGetRequest(request, response);
@@ -42,13 +40,13 @@ public class FileHandler implements RequestHandler {
         byte[] body;
         if (request.getHeaders().containsKey("Range")) {
             response.addStatusLine("206");
-            body = getPartialContents(request, fileManager);
+            body = getPartialContents(request);
         } else {
             response.addStatusLine("200");
-            body = fileManager.getFileContents(request.getRequestURI());
+            body = resourceManager.getFileContents(request.getRequestURI());
         }
 
-        String mimeType = fileManager.getContentType(request.getRequestURI());
+        String mimeType = resourceManager.getContentType(request.getRequestURI());
         response.addHeader("Content-Type: " + mimeType);
         response.addHeader("Content-Length: " + body.length);
         response.addBody(body);
@@ -57,7 +55,7 @@ public class FileHandler implements RequestHandler {
     private void processPatchRequest(Request request, ResponseBuilder response) {
         String requestEtag = request.getHeaders().get("If-Match");
         if (isPatchPreconditionMet(request.getRequestURI(), requestEtag)) {
-            fileManager.overwriteFile(request.getRequestURI(), request.getBody());
+            resourceManager.patchResource(request.getRequestURI(), request.getBody());
             response.addStatusLine("204");
             addEtagToResponse(request.getRequestURI(), response);
         } else {
@@ -69,13 +67,39 @@ public class FileHandler implements RequestHandler {
         response.addStatusLine("405");
     }
 
-    private String parseRange(Request request) {
+    private String parseRangeFromHeader(Request request) {
         return request.getHeaders().get("Range").split("=") [1];
     }
 
-    private byte[] getPartialContents(Request request, FileManager fileManager) {
-        String range = parseRange(request);
-        return fileManager.getPartialFileContents(request.getRequestURI(), range);
+    private Map<String, Integer> parseRangeBoundaries(String range, int fileLength) {
+        Map<String, Integer> rangeBoundaries = new HashMap<>();
+
+        String[] rangeValues = range.split("-");
+        int startIndex;
+        int endIndex;
+
+        if (range.lastIndexOf("-") == range.length()-1) {
+            startIndex = Integer.parseInt(rangeValues[0]);
+            endIndex = fileLength - 1;
+        } else if (range.lastIndexOf("-") == 0) {
+            startIndex = (fileLength) - Integer.parseInt(rangeValues[1]);
+            endIndex = fileLength - 1;
+        } else {
+            startIndex = Integer.parseInt(rangeValues[0]);
+            endIndex = Integer.parseInt(rangeValues[1]);
+        }
+
+        rangeBoundaries.put("startIndex", startIndex);
+        rangeBoundaries.put("endIndex", endIndex);
+
+        return rangeBoundaries;
+    }
+
+    private byte[] getPartialContents(Request request) {
+        String range = parseRangeFromHeader(request);
+        int fileLength = resourceManager.getFileSize(request.getRequestURI());
+        Map<String, Integer> rangeBoundaries = parseRangeBoundaries(range, fileLength);
+        return resourceManager.getPartialFileContents(request.getRequestURI(), rangeBoundaries);
     }
 
     private String sha1Encoding(byte[] byteArray) {
@@ -90,12 +114,12 @@ public class FileHandler implements RequestHandler {
     }
 
     private boolean isPatchPreconditionMet(String requestURI, String requestEtag) {
-        byte[] currentFileContents = fileManager.getFileContents(requestURI);
+        byte[] currentFileContents = resourceManager.getFileContents(requestURI);
         return requestEtag.equals(sha1Encoding(currentFileContents));
     }
 
     private void addEtagToResponse(String requestURI, ResponseBuilder response) {
-        String responseEtag = sha1Encoding(fileManager.getFileContents(requestURI));
+        String responseEtag = sha1Encoding(resourceManager.getFileContents(requestURI));
         response.addHeader("ETag: " + responseEtag);
     }
 

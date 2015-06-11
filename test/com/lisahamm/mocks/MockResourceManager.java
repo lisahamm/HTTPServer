@@ -8,9 +8,15 @@ import java.util.List;
 import java.util.Map;
 
 public class MockResourceManager implements ResourceManager {
+    private String resourceData = "data=foo";
+    private String patchFileContent = "default content";
+    public boolean isPartialContentRequested = false;
 
     public byte[] getFileContents(String uri) {
-        return new byte[0];
+        if (uri.equals("/patch-content.txt")) {
+            return patchFileContent.getBytes();
+        }
+        return "file contents".getBytes();
     }
 
     public int getFileSize(String uri) {
@@ -18,11 +24,12 @@ public class MockResourceManager implements ResourceManager {
     }
 
     public byte[] getPartialFileContents(String uri, Map<String, Integer> rangeBoundaries) {
-        return new byte[0];
+        isPartialContentRequested = true;
+        return "data=".getBytes();
     }
 
     public String getContentType(String requestURI) {
-        return null;
+        return "text/plain";
     }
 
     public List<String> getPublicDirectoryContents() {
@@ -32,18 +39,21 @@ public class MockResourceManager implements ResourceManager {
     }
 
     public void updateResource(String uri, String data) {
-
+        resourceData = data;
     }
 
     public boolean isPublicResourceFound(String uri) {
+        if (uri.equals("/file1") || uri.equals("/patch-content.txt")) {
+            return true;
+        }
         return false;
     }
 
     public void patchResource(String uri, String data) {
-
+        patchFileContent = data;
     }
 
     public String retrieveData(String uri) {
-        return null;
+        return resourceData;
     }
 }

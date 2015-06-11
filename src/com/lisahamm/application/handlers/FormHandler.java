@@ -1,14 +1,18 @@
 package com.lisahamm.application.handlers;
 
-import com.lisahamm.Request;
-import com.lisahamm.RequestHandler;
-import com.lisahamm.ResponseBuilder;
+import com.lisahamm.*;
+
+import java.io.File;
 
 public class FormHandler implements RequestHandler {
     public static final String uri = "/form";
     private static String code200 = "200";
     private static String code405 = "405";
-    private String formData;
+    private ResourceManager resourceManager;
+
+    public FormHandler(ResourceManager resourceManager) {
+        this.resourceManager = resourceManager;
+    }
 
     public boolean handle(Request request, ResponseBuilder response) {
         String requestMethod = request.getRequestMethod();
@@ -19,20 +23,21 @@ public class FormHandler implements RequestHandler {
                 case "GET":
                     response.addStatusLine(code200);
                     response.addHeader("Content-Type: text/plain");
-                    if (getFormData() != null) {
+                    String body = getFormData();
+                    if (body.length() != 0) {
                         response.addBody(getFormData().getBytes());
                     }
                     break;
                 case "POST":
-                    formData = request.getBody();
+                    updateResource(request.getBody());
                     response.addStatusLine(code200);
                     break;
                 case "PUT":
-                    formData = request.getBody();
+                    updateResource(request.getBody());
                     response.addStatusLine(code200);
                     break;
                 case "DELETE":
-                    formData = null;
+                    updateResource("");
                     response.addStatusLine(code200);
                     break;
                 default:
@@ -44,7 +49,11 @@ public class FormHandler implements RequestHandler {
         return false;
     }
 
-    public String getFormData() {
-        return this.formData;
+    private String getFormData() {
+        return resourceManager.retrieveData(uri);
+    }
+
+    private void updateResource(String data) {
+        resourceManager.updateResource(uri, data);
     }
 }

@@ -2,10 +2,10 @@ package com.lisahamm.application.handlers;
 
 import com.lisahamm.mocks.MockHTTPRequest;
 import com.lisahamm.ResponseBuilder;
+import com.lisahamm.mocks.MockResourceManager;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -16,26 +16,33 @@ public class FormHandlerTest {
     private String formHandlerURI = "/form";
     private ResponseBuilder response;
     private FormHandler formHandler;
+    private MockResourceManager resourceManager;
+    private MockHTTPRequest mockRequest;
 
     @Before
     public void setUp() throws Exception {
+        resourceManager = new MockResourceManager();
+        mockRequest = new MockHTTPRequest();
         response = new ResponseBuilder();
-        formHandler = new FormHandler();
+        formHandler = new FormHandler(resourceManager);
     }
 
     @Test
     public void testGETRequestWithCorrectURIIsHandled() throws Exception {
-        MockHTTPRequest mockRequest = new MockHTTPRequest();
         mockRequest.requestMethod = "GET";
         mockRequest.requestURI = formHandlerURI;
+
         boolean handled = formHandler.handle(mockRequest, response);
+
         assertTrue(handled);
         assertTrue(response.getResponseHeader().contains(responseStatus200));
+        String resourceData = resourceManager.retrieveData(mockRequest.getRequestURI());
+        String responseBody = new String(response.getBody());
+        assertEquals(resourceData, responseBody);
     }
 
     @Test
     public void testPOSTRequestWithCorrectURIIsHandled() throws Exception {
-        MockHTTPRequest mockRequest = new MockHTTPRequest();
         mockRequest.requestMethod = "POST";
         mockRequest.requestURI = formHandlerURI;
         mockRequest.body = "data=fatcat";
@@ -44,7 +51,7 @@ public class FormHandlerTest {
 
         assertTrue(handled);
         assertTrue(response.getResponseHeader().contains(responseStatus200));
-        assertEquals(mockRequest.getBody(), formHandler.getFormData());
+        assertEquals(mockRequest.getBody(), resourceManager.retrieveData(mockRequest.getRequestURI()));
     }
 
     @Test
@@ -64,14 +71,13 @@ public class FormHandlerTest {
         assertTrue(handledPostRequest);
         assertTrue(response.getResponseHeader().contains(responseStatus200));
         assertTrue(handledGetRequest);
-        String getResponseBody = new String(responseToGetRequest.getBody(), "UTF-8");
+        String getResponseBody = new String(responseToGetRequest.getBody());
         assertEquals(postRequest.getBody(), getResponseBody);
     }
 
 
     @Test
     public void testPUTRequestWithCorrectURIIsHandled() throws Exception {
-        MockHTTPRequest mockRequest = new MockHTTPRequest();
         mockRequest.requestMethod = "PUT";
         mockRequest.requestURI = formHandlerURI;
         mockRequest.body = "data=heathcliff";
@@ -80,58 +86,39 @@ public class FormHandlerTest {
 
         assertTrue(handled);
         assertTrue(response.getResponseHeader().contains(responseStatus200));
-        assertEquals(mockRequest.getBody(), formHandler.getFormData());
+        assertEquals(mockRequest.getBody(), resourceManager.retrieveData(mockRequest.getRequestURI()));
     }
 
     @Test
     public void testDELETERequestWithCorrectURIIsHandled() throws Exception {
-        MockHTTPRequest postRequest = new MockHTTPRequest();
-        postRequest.requestMethod = "POST";
-        postRequest.requestURI = formHandlerURI;
-        postRequest.body = "data=fatcat";
-        MockHTTPRequest getRequest = new MockHTTPRequest();
-        getRequest.requestMethod = "GET";
-        getRequest.requestURI = formHandlerURI;
-        ResponseBuilder responseToGetRequest1 = new ResponseBuilder();
-        MockHTTPRequest deleteRequest = new MockHTTPRequest();
-        deleteRequest.requestMethod = "DELETE";
-        deleteRequest.requestURI = formHandlerURI;
-        ResponseBuilder responseToDeleteRequest = new ResponseBuilder();
-        ResponseBuilder responseToGetRequest2 = new ResponseBuilder();
+        mockRequest.requestMethod = "DELETE";
+        mockRequest.requestURI = formHandlerURI;
 
-        boolean handledPostRequest = formHandler.handle(postRequest, response);
-        boolean handledGetRequest1 = formHandler.handle(getRequest, responseToGetRequest1);
-        boolean handledDeleteRequest = formHandler.handle(deleteRequest, responseToDeleteRequest);
-        boolean handledGetRequest2 = formHandler.handle(getRequest, responseToGetRequest2);
-
-        assertTrue(handledPostRequest);
-        assertTrue(response.getResponseHeader().contains(responseStatus200));
-        assertTrue(handledGetRequest1);
-        String getResponseBody = new String(responseToGetRequest1.getBody(), "UTF-8");
-        assertEquals(postRequest.getBody(), getResponseBody);
+        boolean handledDeleteRequest = formHandler.handle(mockRequest, response);
 
         assertTrue(handledDeleteRequest);
-        assertTrue(responseToDeleteRequest.getResponseHeader().contains(responseStatus200));
-        assertTrue(handledGetRequest2);
-        assertNull(responseToGetRequest2.getBody());
+        assertTrue(response.getResponseHeader().contains(responseStatus200));
+        assertTrue(resourceManager.retrieveData(mockRequest.getRequestURI()).length() == 0);
     }
 
     @Test
     public void testRequestWithInvalidMethodAndCorrectURIIsHandled() throws Exception {
-        MockHTTPRequest mockRequest = new MockHTTPRequest();
         mockRequest.requestMethod = "PATCH";
         mockRequest.requestURI = formHandlerURI;
+
         boolean handled = formHandler.handle(mockRequest, response);
+
         assertTrue(handled);
         assertTrue(response.getResponseHeader().contains(responseStatus405));
     }
 
     @Test
     public void testRequestWithInvalidURIIsNotHandled() throws Exception {
-        MockHTTPRequest mockRequest = new MockHTTPRequest();
         mockRequest.requestMethod = "GET";
         mockRequest.requestURI = "/form2";
+
         boolean handled = formHandler.handle(mockRequest, response);
+
         assertFalse(handled);
     }
 }
