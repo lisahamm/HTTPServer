@@ -1,18 +1,16 @@
 package com.lisahamm;
 
 import java.io.File;
-import java.net.FileNameMap;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class AppResourceManager {
-    private Filer fileManager;
+    private FileManager fileManager;
     private String publicDirectoryPath;
     private String pathToDataStorage;
 
-    public AppResourceManager(Filer fileManager, String publicDirectoryPath, String pathToDataStorage) {
+    public AppResourceManager(FileManager fileManager, String publicDirectoryPath, String pathToDataStorage) {
         this.fileManager = fileManager;
         this.publicDirectoryPath = publicDirectoryPath;
         this.pathToDataStorage = pathToDataStorage;

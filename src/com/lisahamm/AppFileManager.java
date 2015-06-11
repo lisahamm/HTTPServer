@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AppFileManager implements Filer {
+public class AppFileManager implements FileManager {
 
     public boolean isFileFound(String filePath) {
         File f = new File(filePath);
