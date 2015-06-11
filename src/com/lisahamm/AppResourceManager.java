@@ -1,11 +1,13 @@
 package com.lisahamm;
 
+import sun.net.*;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AppResourceManager {
+public class AppResourceManager implements ResourceManager {
     private FileManager fileManager;
     private String publicDirectoryPath;
     private String pathToDataStorage;
