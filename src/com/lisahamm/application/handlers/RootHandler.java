@@ -1,10 +1,8 @@
 package com.lisahamm.application.handlers;
 
 
-import com.lisahamm.DirectoryManager;
-import com.lisahamm.Request;
-import com.lisahamm.RequestHandler;
-import com.lisahamm.ResponseBuilder;
+import com.lisahamm.*;
+import sun.net.ResourceManager;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -12,15 +10,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class RootHandler implements RequestHandler {
-    private DirectoryManager directoryManager;
+    private AppResourceManager resourceManager;
     public static final String uri = "/";
     private static String code200 = "200";
     private static String code405 = "405";
     private static String contentTypeHTML = "Content-Type: text/html";
 
 
-    public RootHandler(DirectoryManager directoryManager) {
-        this.directoryManager = directoryManager;
+    public RootHandler(AppResourceManager resourceManager) {
+        this.resourceManager = resourceManager;
     }
 
     public boolean handle(Request request, ResponseBuilder response) {
@@ -32,7 +30,7 @@ public class RootHandler implements RequestHandler {
                 case "GET":
                     response.addStatusLine(code200);
                     response.addHeader(contentTypeHTML);
-                    List<String> publicFiles = directoryManager.buildDirectoryContents();
+                    List<String> publicFiles = resourceManager.getPublicDirectoryContents();
                     String html = addHtmlLinks(publicFiles);
                     response.addBody(html.getBytes());
                    break;
