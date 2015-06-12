@@ -23,8 +23,8 @@ public class AppFileManager implements FileManager {
     public void writeToFile(String filePath, String data) {
         try {
             File file = new File(filePath);
-            FileWriter writer = new FileWriter(file, false);
-            writer.write(data);
+            PrintWriter writer = new PrintWriter(file, "UTF-8");
+            writer.print(data);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();

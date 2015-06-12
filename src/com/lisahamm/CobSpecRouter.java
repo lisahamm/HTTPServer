@@ -37,5 +37,6 @@ public class CobSpecRouter implements Router {
         registerHandler(new FileHandler(resourceManager));
         registerHandler(new RedirectHandler());
         registerHandler(new ParametersHandler());
+        registerHandler(new LogHandler(resourceManager));
         registerHandler(new NotFoundHandler());
     }}

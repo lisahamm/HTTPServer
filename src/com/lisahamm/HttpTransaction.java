@@ -9,6 +9,8 @@ public class HttpTransaction extends Thread {
     private RequestParser parser;
     private ResponseBuilder responseBuilder;
     private Router router;
+    private RequestLogger logger = new RequestLogger();
+
 
     public HttpTransaction(ConnectionIO clientConnection, RequestParser parser,
                            ResponseBuilder responseBuilder, Router router) {
@@ -26,7 +28,7 @@ public class HttpTransaction extends Thread {
 
             if (requestIsValid(rawRequest)) {
 
-                System.out.println(rawRequest);
+                logRequest(rawRequest);
 
                 HTTPRequest request = parser.generateParsedRequest(rawRequest);
                 router.invoke(request, responseBuilder);
@@ -70,5 +72,9 @@ public class HttpTransaction extends Thread {
 
     private boolean requestIsValid(String rawRequest) {
         return rawRequest.length() > 1;
+    }
+
+    private void logRequest(String rawRequest) {
+        logger.addEntry(rawRequest);
     }
 }

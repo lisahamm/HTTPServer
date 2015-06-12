@@ -25,7 +25,7 @@ public class FileHandler implements RequestHandler {
                     processGetRequest(request, response);
                     break;
                 case "PATCH":
-                   processPatchRequest(request, response);
+                    processPatchRequest(request, response);
                     break;
                 default:
                     processRequestWithMethodNotAllowed(response);
@@ -61,6 +61,7 @@ public class FileHandler implements RequestHandler {
         } else {
             response.addStatusLine("412");
         }
+
     }
 
     private void processRequestWithMethodNotAllowed(ResponseBuilder response) {
