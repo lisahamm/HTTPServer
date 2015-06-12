@@ -123,5 +123,4 @@ public class FileHandler implements RequestHandler {
         String responseEtag = sha1Encoding(resourceManager.getFileContents(requestURI));
         response.addHeader("ETag: " + responseEtag);
     }
-
 }

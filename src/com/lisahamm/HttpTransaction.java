@@ -9,7 +9,7 @@ public class HttpTransaction extends Thread {
     private RequestParser parser;
     private ResponseBuilder responseBuilder;
     private Router router;
-    private RequestLogger logger = new RequestLogger();
+    private RequestLogger logger = new RequestLogger(new AppFileManager());
 
 
     public HttpTransaction(ConnectionIO clientConnection, RequestParser parser,

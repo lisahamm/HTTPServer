@@ -12,7 +12,7 @@ public class MockFileManager implements FileManager {
     public boolean isPartialContentRequested = false;
     public boolean isContentTypeRequested = false;
     public boolean isSizeRequested = false;
-    public boolean isAppendedToFile = true;
+    public boolean isAppendedToFile = false;
 
     public boolean isFileFound(String filePath) {
         fileFound = true;

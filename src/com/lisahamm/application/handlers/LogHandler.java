@@ -42,7 +42,7 @@ public class LogHandler implements RequestHandler {
         return false;
     }
 
-    public boolean authorized(Request request) {
+    private boolean authorized(Request request) {
         if (request.getHeaders().containsKey("Authorization")) {
             String encodedCredentials = parseAuthorizationHeader(request);
             String decodedCredentials = base64Decode(encodedCredentials.trim());
