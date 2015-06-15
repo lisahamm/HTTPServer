@@ -2,15 +2,18 @@ package com.lisahamm;
 
 import com.lisahamm.application.handlers.*;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
 public class CobSpecRouter implements Router {
     private static String pathToPublicDirectory = "./../cob_spec/public";
     private static String pathToDataStorage = "./../cob_spec/database";
+    private static ResourceManager resourceManager;
     private List<RequestHandler> requestHandlers = new LinkedList<>();
 
-    public CobSpecRouter() {
+    public CobSpecRouter(ResourceManager resourceManager) {
+        this.resourceManager = resourceManager;
         registerHandlers();
     }
 
@@ -29,8 +32,6 @@ public class CobSpecRouter implements Router {
     }
 
     private void registerHandlers() {
-        FileManager fileManager = new AppFileManager();
-        AppResourceManager resourceManager = new AppResourceManager(fileManager, pathToPublicDirectory, pathToDataStorage);
         registerHandler(new RootHandler(resourceManager));
         registerHandler(new FormHandler(resourceManager));
         registerHandler(new MethodOptionsHandler());
