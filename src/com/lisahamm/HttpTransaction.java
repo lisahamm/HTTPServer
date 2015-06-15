@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class HttpTransaction extends Thread {
+public class HttpTransaction implements Runnable {
     private ConnectionIO clientConnection;
     private RequestParser parser;
     private ResponseBuilder responseBuilder;
