@@ -7,8 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CobSpecRouter implements Router {
-    private static String pathToPublicDirectory = "./../cob_spec/public";
-    private static String pathToDataStorage = "./../cob_spec/database";
     private static ResourceManager resourceManager;
     private List<RequestHandler> requestHandlers = new LinkedList<>();
 
