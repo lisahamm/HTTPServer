@@ -9,10 +9,12 @@ public class Server implements Runnable {
     private boolean running = true;
     private ServerSocket serverSocket;
     private Router router;
+    private Logger logger;
 
-    public Server(int portNumber, Router router) {
+    public Server(int portNumber, Router router, Logger logger) {
         this.portNumber = portNumber;
         this.router = router;
+        this.logger = logger;
     }
 
     public void run() {
@@ -23,8 +25,9 @@ public class Server implements Runnable {
             while (running) {
                 ClientConnection clientConnection = new ClientConnection(serverSocket.accept());
                 System.out.println("Connection made with " + clientConnection.getSocket());
-
-                HttpTransaction httpTransaction = new HttpTransaction(clientConnection, new RequestParser(), new ResponseBuilder(), router);
+                
+                HttpTransaction httpTransaction = new HttpTransaction(clientConnection,
+                        new RequestParser(), new ResponseBuilder(), router, logger);
                 httpTransaction.start();
             }
         } catch (IOException e) {

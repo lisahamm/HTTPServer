@@ -15,8 +15,10 @@ public class ServerMain {
         } else {
             portNumber = Integer.parseInt(args[0]);
         }
+        FileManager fileManager = new AppFileManager();
+        Logger logger = new RequestLogger(fileManager);
         Router router = new CobSpecRouter();
-        Server server = new Server(portNumber, router);
+        Server server = new Server(portNumber, router, logger);
         server.run();
     }
 }
