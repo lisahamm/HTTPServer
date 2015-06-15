@@ -9,27 +9,25 @@ public class HttpTransaction extends Thread {
     private RequestParser parser;
     private ResponseBuilder responseBuilder;
     private Router router;
-    private RequestLogger logger = new RequestLogger(new AppFileManager());
+    private Logger logger;
 
 
     public HttpTransaction(ConnectionIO clientConnection, RequestParser parser,
-                           ResponseBuilder responseBuilder, Router router) {
+                           ResponseBuilder responseBuilder, Router router, Logger logger) {
         this.clientConnection = clientConnection;
         this.parser = parser;
         this.responseBuilder = responseBuilder;
         this.router = router;
+        this.logger = logger;
     }
 
     public void run() {
         try {
             openClientConnectionIO();
-
             String rawRequest = readInRawRequest();
 
             if (requestIsValid(rawRequest)) {
-
                 logRequest(rawRequest);
-
                 HTTPRequest request = parser.generateParsedRequest(rawRequest);
                 router.invoke(request, responseBuilder);
                 sendResponse(responseBuilder);
