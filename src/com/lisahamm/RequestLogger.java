@@ -1,8 +1,8 @@
 package com.lisahamm;
 
 
-public class RequestLogger {
-    private static String pathToDataStorage = "./../cob_spec/database";
+public class RequestLogger implements Logger {
+    private static String pathToDataStorage = "./../cob_spec/database/logs";
     private FileManager fileManager;
 
     public RequestLogger(FileManager fileManager) {
@@ -10,7 +10,7 @@ public class RequestLogger {
     }
 
     public void addEntry(String request) {
-        String filePath = pathToDataStorage + "/logs";
+        String filePath = pathToDataStorage;
         fileManager.appendToFile(filePath, request);
     }
 }
