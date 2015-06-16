@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server implements Runnable {
-    private int portNumber = 0;
+    private int portNumber;
     private boolean running = true;
     private ServerSocket serverSocket;
     private ExecutorService threadPool;
