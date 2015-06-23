@@ -8,7 +8,6 @@ import java.util.concurrent.Executors;
 
 public class Server implements Runnable {
     private int portNumber;
-    private boolean running = true;
     private ServerSocket serverSocket;
     private ExecutorService threadPool;
     private Router router;
@@ -26,7 +25,8 @@ public class Server implements Runnable {
             serverSocket = new ServerSocket(portNumber);
 
             System.out.println("Server is listening on port: " + portNumber);
-            while (running) {
+
+            while (!threadPool.isShutdown()) {
                 threadPool.execute(new HttpTransaction(new ClientConnection(serverSocket.accept()),
                         new RequestParser(), new ResponseBuilder(), router, logger));
             }
