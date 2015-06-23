@@ -19,4 +19,6 @@ public interface ConnectionIO {
     public void writeToOutputStream(byte[] output) throws IOException;
 
     public void close() throws IOException;
+
+    public boolean isConnected() throws IOException;
 }
