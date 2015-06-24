@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ResponseBuilderTest {
     private String status200 = "200";
@@ -45,5 +46,14 @@ public class ResponseBuilderTest {
     public void testBuildResponseWithBody() throws Exception {
         response.addBody(body);
         assertEquals(body, response.getBody());
+    }
+
+    @Test
+    public void testGetEntireResponse() throws Exception {
+        response.addStatusLine("200");
+        response.addHeader(htmlContentHeader);
+        response.addBody(body);
+
+        assertEquals(responseWithHeader200 + "\r\n" + new String(body), new String(response.getEntireResponse()));
     }
 }

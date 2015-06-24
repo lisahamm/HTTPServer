@@ -1,5 +1,7 @@
 package com.lisahamm;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +27,15 @@ public class ResponseBuilder {
         body = bodyContent;
     }
 
+    public void addToBody(byte[] additionalBodyContent) {
+        if (body != null) {
+            Map<String, byte[]> bodyComponents = new HashMap<>();
+            bodyComponents.put("component1", body);
+            bodyComponents.put("component2", additionalBodyContent);
+            body = combineByteArrays(bodyComponents);
+        }
+    }
+
     public String getResponseHeader() {
         constructResponseHeader();
         return responseHeader.toString();
@@ -32,6 +43,23 @@ public class ResponseBuilder {
 
     public byte[] getBody() {
         return body;
+    }
+
+    public byte[] getEntireResponse() {
+        Map<String, byte[]> responseComponents = getResponseComponents();
+        return combineByteArrays(responseComponents);
+    }
+
+    private Map<String,byte[]> getResponseComponents() {
+        Map<String, byte[]> responseComponents = new HashMap<>();
+        if (statusLine != null) {
+            byte[] header = (getResponseHeader() + CRLF).getBytes();
+            responseComponents.put("header", header);
+        }
+        if (body != null) {
+            responseComponents.put("body", body);
+        }
+        return responseComponents;
     }
 
     private void constructResponseHeader() {
@@ -54,5 +82,18 @@ public class ResponseBuilder {
         statuses.put("405", "405 Method Not Allowed");
         statuses.put("412", "412 Precondition Failed");
         return statuses;
+    }
+
+    private byte[] combineByteArrays(Map<String, byte[]> byteArrays) {
+        ByteArrayOutputStream combinedArray = new ByteArrayOutputStream();
+        try {
+            for (byte[] byteArray : byteArrays.values()) {
+                combinedArray.write(byteArray);
+            }
+            combinedArray.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return combinedArray.toByteArray();
     }
 }
