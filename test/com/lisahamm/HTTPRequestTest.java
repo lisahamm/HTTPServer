@@ -42,7 +42,7 @@ public class HTTPRequestTest {
 
     @Test
     public void testRequestHeadersStringIsSet() throws Exception {
-        assertEquals(parsedComponents.get("headers"), request.getHeaders());
+        assertEquals(headers, request.getHeaders());
     }
 
     @Test
@@ -52,6 +52,6 @@ public class HTTPRequestTest {
 
     @Test
     public void testRequestParamsAreSet() throws Exception {
-        assertEquals(params.get("variable1Key"), request.getParams().get("variable1Key"));
+        assertEquals(params, request.getParams());
     }
 }
