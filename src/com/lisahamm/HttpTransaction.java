@@ -1,7 +1,5 @@
 package com.lisahamm;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class HttpTransaction implements Runnable {
@@ -30,7 +28,9 @@ public class HttpTransaction implements Runnable {
                 logRequest(rawRequest);
                 HTTPRequest request = parser.generateParsedRequest(rawRequest);
                 router.invoke(request, responseBuilder);
-                sendResponse(responseBuilder);
+                if (clientConnection.isValid()) {
+                    sendResponse(responseBuilder);
+                }
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -44,15 +44,7 @@ public class HttpTransaction implements Runnable {
     }
 
     private void sendResponse(ResponseBuilder response) throws IOException {
-        String responseHeader = response.getResponseHeader();
-        byte[] body = response.getBody();
-
-        clientConnection.writeToOutputStream(responseHeader);
-
-        if (body != null) {
-            clientConnection.writeToOutputStream(response.CRLF);
-            clientConnection.writeToOutputStream(body);
-        }
+        clientConnection.writeToOutputStream(response.getEntireResponse());
     }
 
     private void openClientConnectionIO() throws IOException {

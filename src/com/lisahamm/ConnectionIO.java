@@ -20,5 +20,6 @@ public interface ConnectionIO {
 
     public void close() throws IOException;
 
-    public boolean isConnected() throws IOException;
+    public boolean isValid() throws IOException;
+
 }

@@ -1,9 +1,6 @@
 package com.lisahamm;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientConnection implements ConnectionIO {
@@ -49,6 +46,13 @@ public class ClientConnection implements ConnectionIO {
 
     public void close() throws IOException {
         inputReader.close();
+        clientSocket.shutdownInput();
         outputStream.close();
+        clientSocket.shutdownOutput();
+        clientSocket.close();
+    }
+
+    public boolean isValid() {
+        return (!clientSocket.isOutputShutdown()) && clientSocket.isConnected();
     }
 }
