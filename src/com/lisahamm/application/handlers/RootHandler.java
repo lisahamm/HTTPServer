@@ -2,6 +2,7 @@ package com.lisahamm.application.handlers;
 
 
 import com.lisahamm.*;
+import com.lisahamm.application.HtmlBuilder;
 
 
 import java.io.File;
@@ -11,14 +12,15 @@ import java.util.List;
 
 public class RootHandler implements RequestHandler {
     private ResourceManager resourceManager;
+    private HtmlBuilder viewBuilder;
     public static final String uri = "/";
     private static String code200 = "200";
     private static String code405 = "405";
     private static String contentTypeHTML = "Content-Type: text/html";
 
-
     public RootHandler(ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
+        this.viewBuilder = new HtmlBuilder();
     }
 
     public boolean handle(Request request, ResponseBuilder response) {
@@ -31,8 +33,8 @@ public class RootHandler implements RequestHandler {
                     response.addStatusLine(code200);
                     response.addHeader(contentTypeHTML);
                     List<String> publicFiles = resourceManager.getPublicDirectoryContents();
-                    String html = addHtmlLinks(publicFiles);
-                    response.addBody(html.getBytes());
+                    String view = addHtmlLinks(publicFiles);
+                    response.addBody(view.getBytes());
                    break;
                 default:
                     response.addStatusLine(code405);
@@ -44,20 +46,10 @@ public class RootHandler implements RequestHandler {
     }
 
     private String addHtmlLinks(List<String>fileNames) {
-        String html = "";
-        html += "<p>";
-        for(String file : fileNames) {
-            String filePath = "/" + file;
-            html += addHtmlLink(filePath, file);
-            html += "<br>";
+        for (String file : fileNames) {
+            viewBuilder.addLink("/" + file, file);
+            viewBuilder.addNewLine();
         }
-        html += "</p>";
-        return html;
-    }
-
-    private String addHtmlLink(String link, String linkName) {
-        String html = "<a href=\"";
-        html += link + "\">" + linkName + "</a>";
-        return html;
+        return viewBuilder.getView();
     }
 }
