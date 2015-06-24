@@ -11,7 +11,6 @@ public class HtmlBuilderTest {
     @Before
     public void setUp() throws Exception {
         viewBuilder = new HtmlBuilder();
-
     }
 
     @Test
@@ -71,5 +70,12 @@ public class HtmlBuilderTest {
 
         String view = viewBuilder.getView();
         assertTrue(view.contains("<a href=\"" + uri + "\">" + displayText + "</a>"));
+    }
+
+    @Test
+    public void testAddNewLine() throws Exception {
+        viewBuilder.addNewLine();
+
+        assertTrue(viewBuilder.getView().contains("\n"));
     }
 }

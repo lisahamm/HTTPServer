@@ -52,6 +52,9 @@ public class HtmlBuilder {
         view.append("<a href=\"" + uri + "\">" + displayText + "</a>");
     }
 
+    public void addNewLine() {
+        view.append(newLine);
+    }
 
     public String getView() {
         return view.toString();
