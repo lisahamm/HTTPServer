@@ -1,10 +1,11 @@
 package com.lisahamm.application.handlers;
 
-import com.lisahamm.RequestHandler;
 import com.lisahamm.ResponseBuilder;
 import com.lisahamm.mocks.MockHTTPRequest;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.HashMap;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -28,11 +29,15 @@ public class CookieHandlerTest {
     public void testItHandlesRequestWithCorrectURI() throws Exception {
         request.requestMethod = "GET";
         request.requestURI = cookieHandlerURI;
+        request.params = new HashMap<>();
+        request.params.put("type", "chocolate");
 
         boolean handled = cookieHandler.handle(request, response);
 
         assertTrue(handled);
         assertTrue(response.getResponseHeader().contains(responseStatus200));
+        assertTrue(response.getResponseHeader().contains("Set-Cookie: type=chocolate"));
+        assertTrue(new String(response.getBody()).contains("<a href=\"/eat_cookie\">Eat</a>"));
     }
 
     @Test
