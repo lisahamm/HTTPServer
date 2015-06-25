@@ -7,58 +7,61 @@ import static org.junit.Assert.*;
 
 public class HtmlBuilderTest {
     private HtmlBuilder viewBuilder;
+    private StringBuilder html;
+
 
     @Before
     public void setUp() throws Exception {
         viewBuilder = new HtmlBuilder();
+        html = new StringBuilder();
     }
 
     @Test
     public void testAddDocType() throws Exception {
-        viewBuilder.addDocType();
-        assertEquals("<!DOCTYPE html>\n", viewBuilder.getView());
+        viewBuilder.addDocType(html);
+        assertEquals("<!DOCTYPE html>\n", html.toString());
     }
 
     @Test
     public void testAddHtmlOpeningTag() throws Exception {
-        viewBuilder.addOpeningHtmlTag();
-        assertTrue(viewBuilder.getView().contains("<html>\n"));
+        viewBuilder.addOpeningHtmlTag(html);
+        assertTrue(html.toString().contains("<html>\n"));
     }
 
     @Test
     public void testAddHtmlClosingTag() throws Exception {
-        viewBuilder.addClosingHtmlTag();
-        assertTrue(viewBuilder.getView().contains("</html>"));
+        viewBuilder.addClosingHtmlTag(html);
+        assertTrue(html.toString().contains("</html>"));
     }
 
     @Test
     public void testAddBodyOpeningTag() throws Exception {
-        viewBuilder.addOpeningBodyTag();
-        assertTrue(viewBuilder.getView().contains("<body>\n"));
+        viewBuilder.addOpeningBodyTag(html);
+        assertTrue(html.toString().contains("<body>\n"));
     }
 
     @Test
     public void testAddBodyClosingTag() throws Exception {
-        viewBuilder.addClosingBodyTag();
-        assertTrue(viewBuilder.getView().contains("</body>\n"));
+        viewBuilder.addClosingBodyTag(html);
+        assertTrue(html.toString().contains("</body>\n"));
     }
 
     @Test
     public void testAddHeader() throws Exception {
         String header = "Header Test";
 
-        viewBuilder.addHeader("h1", header);
+        viewBuilder.addHeader(html, "h1", header);
 
-        assertTrue(viewBuilder.getView().contains("<h1>" + header + "</h1>"));
+        assertTrue(html.toString().contains("<h1>" + header + "</h1>"));
     }
 
     @Test
     public void testAddImage() throws Exception {
-        String imageFileName = "image.png";
+        String imageUri = "/image.png";
 
-        viewBuilder.addImage(imageFileName);
+        viewBuilder.addImage(html, imageUri);
 
-        assertTrue(viewBuilder.getView().contains("<img src=\"" + imageFileName + "\">"));
+        assertTrue(html.toString().contains("<img src=\"" + imageUri + "\">"));
     }
 
     @Test
@@ -66,16 +69,25 @@ public class HtmlBuilderTest {
         String uri = "/file1";
         String displayText = "File 1";
 
-        viewBuilder.addLink(uri, displayText);
+        viewBuilder.addLink(html, uri, displayText);
 
-        String view = viewBuilder.getView();
+        String view = html.toString();
         assertTrue(view.contains("<a href=\"" + uri + "\">" + displayText + "</a>"));
     }
 
     @Test
     public void testAddNewLine() throws Exception {
-        viewBuilder.addNewLine();
+        viewBuilder.addNewLine(html);
 
-        assertTrue(viewBuilder.getView().contains("\n"));
+        assertTrue(html.toString().contains("\n"));
+    }
+
+    @Test
+    public void testAddToTemplate() throws Exception {
+        viewBuilder.addHeader(html, "h1", "Header");
+        viewBuilder.addToTemplate(html);
+        String expectedView = "<!DOCTYPE html>\n<html>\n<body>\n<h1>Header</h1>\n</body>\n</html>";
+
+        assertEquals(expectedView, html.toString());
     }
 }

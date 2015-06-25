@@ -5,6 +5,8 @@ import com.lisahamm.RequestHandler;
 import com.lisahamm.ResponseBuilder;
 import com.lisahamm.application.HtmlBuilder;
 
+import java.util.Base64;
+
 public class EatCookieHandler implements RequestHandler {
     private HtmlBuilder viewBuilder;
     public static final String uri = "/eat_cookie";
@@ -26,6 +28,8 @@ public class EatCookieHandler implements RequestHandler {
                     String rawCookie = request.getHeaders().get("Cookie");
                     if (rawCookie != null) {
                         String cookieType = parseCookie(cookieKey, rawCookie);
+                        Base64.Decoder decoder = Base64.getDecoder();
+                        cookieType = new String(decoder.decode(cookieType));
                         String view = buildView(cookieType, imageFileName);
                         constructResponse(response, view);
                     }
@@ -50,13 +54,10 @@ public class EatCookieHandler implements RequestHandler {
     }
 
     private String buildView(String cookieType, String imageFileName) {
-        viewBuilder.addDocType();
-        viewBuilder.addOpeningHtmlTag();
-        viewBuilder.addOpeningBodyTag();
-        viewBuilder.addHeader("h1", "mmmm " + cookieType);
-        viewBuilder.addImage(imageFileName);
-        viewBuilder.addClosingBodyTag();
-        viewBuilder.addClosingHtmlTag();
-        return viewBuilder.getView();
+        StringBuilder html = new StringBuilder();
+        viewBuilder.addHeader(html, "h1", "mmmm " + cookieType);
+        viewBuilder.addImage(html, imageFileName);
+        viewBuilder.addToTemplate(html);
+        return html.toString();
     }
 }

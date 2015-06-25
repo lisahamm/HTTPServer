@@ -36,7 +36,20 @@ public class CookieHandlerTest {
 
         assertTrue(handled);
         assertTrue(response.getResponseHeader().contains(responseStatus200));
-        assertTrue(response.getResponseHeader().contains("Set-Cookie: type=chocolate"));
+        assertTrue(response.getResponseHeader().contains("Set-Cookie: type=Y2hvY29sYXRl"));
+        assertTrue(new String(response.getBody()).contains("<a href=\"/eat_cookie\">Eat</a>"));
+    }
+
+    @Test
+    public void testHandlesCookieWithTwoWords() throws Exception {
+        request.requestMethod = "GET";
+        request.requestURI = cookieHandlerURI;
+        request.params = new HashMap<>();
+        request.params.put("type", "chocolate chip");
+
+        boolean handled = cookieHandler.handle(request, response);
+
+        assertTrue(response.getResponseHeader().contains("Set-Cookie: type=Y2hvY29sYXRlIGNoaXA="));
         assertTrue(new String(response.getBody()).contains("<a href=\"/eat_cookie\">Eat</a>"));
     }
 

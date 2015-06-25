@@ -29,7 +29,7 @@ public class EatCookieHandlerTest {
         request.requestMethod = "GET";
         request.requestURI = eatCookieHandlerURI;
         request.headers = new HashMap<>();
-        request.headers.put("Cookie", "type=chocolate");
+        request.headers.put("Cookie", "type=Y2hvY29sYXRl");
 
         boolean handled = eatCookieHandler.handle(request, response);
 
@@ -50,5 +50,4 @@ public class EatCookieHandlerTest {
         assertTrue(handled);
         assertTrue(response.getResponseHeader().contains(responseStatus405));
     }
-
 }

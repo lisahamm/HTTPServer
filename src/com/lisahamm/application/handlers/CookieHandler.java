@@ -3,6 +3,8 @@ package com.lisahamm.application.handlers;
 import com.lisahamm.*;
 import com.lisahamm.application.HtmlBuilder;
 
+import java.util.Base64;
+
 public class CookieHandler implements RequestHandler {
     public static final String uri = "/cookie";
     private HtmlBuilder viewBuilder;
@@ -24,7 +26,9 @@ public class CookieHandler implements RequestHandler {
                     String cookieType = request.getParams().get(cookieParamKey);
 
                     if (cookieType != null) {
-                        String cookie = cookieParamKey + "=" + cookieType;
+                        Base64.Encoder encoder = Base64.getEncoder();
+                        String encodedCookieType = encoder.encodeToString(cookieType.getBytes());
+                        String cookie = cookieParamKey + "=" + encodedCookieType;
                         response.addHeader("Set-Cookie: " + cookie);
                         response.addHeader("Content-Type: text/html");
 
@@ -43,12 +47,9 @@ public class CookieHandler implements RequestHandler {
     }
 
     private String buildView(String uri, String displayText) {
-        viewBuilder.addDocType();
-        viewBuilder.addOpeningHtmlTag();
-        viewBuilder.addOpeningBodyTag();
-        viewBuilder.addLink(uri, displayText);
-        viewBuilder.addClosingBodyTag();
-        viewBuilder.addClosingHtmlTag();
-        return viewBuilder.getView();
+        StringBuilder html = new StringBuilder();
+        viewBuilder.addLink(html, uri, displayText);
+        viewBuilder.addToTemplate(html);
+        return html.toString();
     }
 }

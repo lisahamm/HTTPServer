@@ -46,10 +46,11 @@ public class RootHandler implements RequestHandler {
     }
 
     private String addHtmlLinks(List<String>fileNames) {
+        StringBuilder html = new StringBuilder();
         for (String file : fileNames) {
-            viewBuilder.addLink("/" + file, file);
-            viewBuilder.addNewLine();
+            viewBuilder.addLink(html, "/" + file, file);
+            viewBuilder.addNewLine(html);
         }
-        return viewBuilder.getView();
+        return html.toString();
     }
 }
