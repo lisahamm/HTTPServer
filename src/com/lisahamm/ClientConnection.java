@@ -45,9 +45,7 @@ public class ClientConnection implements ConnectionIO {
     }
 
     public void close() throws IOException {
-        inputReader.close();
         clientSocket.shutdownInput();
-        outputStream.close();
         clientSocket.shutdownOutput();
         clientSocket.close();
     }
