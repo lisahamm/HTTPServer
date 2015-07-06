@@ -9,7 +9,8 @@ public abstract class BaseController implements Controller {
     protected String uri;
     protected static String code200 = "200";
     protected static String code302 = "302";
-    private static String code405 = "405";
+    protected static String code405 = "405";
+    protected static String contentTypeHTML = "Content-Type: text/html";
 
 
     public boolean shouldExecute(Request request) {
