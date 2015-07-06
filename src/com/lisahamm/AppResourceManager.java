@@ -9,26 +9,26 @@ import java.util.Map;
 
 public class AppResourceManager implements ResourceManager {
     private FileManager fileManager;
-    private String publicDirectoryPath;
-    private String pathToDataStorage;
+    private String publicDirectory;
+    private String dataStorage;
 
-    public AppResourceManager(FileManager fileManager, String publicDirectoryPath, String pathToDataStorage) {
+    public AppResourceManager(FileManager fileManager) {
         this.fileManager = fileManager;
-        this.publicDirectoryPath = publicDirectoryPath;
-        this.pathToDataStorage = pathToDataStorage;
+        this.publicDirectory = Settings.publicDirectory;
+        this.dataStorage = Settings.dataStorage;
     }
 
     public byte[] getFileContents(String uri) {
-        return fileManager.getFileContents(publicDirectoryPath + uri);
+        return fileManager.getFileContents(publicDirectory + uri);
     }
 
     public int getFileSize(String uri) {
-        String filePath = publicDirectoryPath + uri;
+        String filePath = publicDirectory + uri;
         return (int) fileManager.getSize(filePath);
     }
 
     public byte[] getPartialFileContents(String uri, Map<String, Integer> rangeBoundaries) {
-        String filePath = publicDirectoryPath + uri;
+        String filePath = publicDirectory + uri;
         Integer startIndex = rangeBoundaries.get("startIndex");
         Integer endIndex = rangeBoundaries.get("endIndex");
         byte[] partialContent = null;
@@ -39,12 +39,12 @@ public class AppResourceManager implements ResourceManager {
     }
 
     public String getContentType(String requestURI) {
-        String filePath = publicDirectoryPath + requestURI;
+        String filePath = publicDirectory + requestURI;
         return fileManager.getContentType(filePath);
     }
 
     public List<String> getPublicDirectoryContents() {
-        File f = new File(publicDirectoryPath);
+        File f = new File(publicDirectory);
         File[] files = f.listFiles();
         List<String> fileNames = new ArrayList<>();
 
@@ -55,22 +55,22 @@ public class AppResourceManager implements ResourceManager {
     }
 
     public void updateResource(String uri, String data) {
-        String filePath = pathToDataStorage + uri;
+        String filePath = dataStorage + uri;
         fileManager.writeToFile(filePath, data);
     }
 
     public boolean isPublicResourceFound(String uri) {
-        String filePath = publicDirectoryPath + uri;
+        String filePath = publicDirectory + uri;
         return fileManager.isFileFound(filePath);
     }
 
     public void patchResource(String uri, String data) {
-        String filePath = publicDirectoryPath + uri;
+        String filePath = publicDirectory + uri;
         fileManager.writeToFile(filePath, data);
     }
 
     public String retrieveData(String uri) {
-        String filePath = pathToDataStorage + uri;
+        String filePath = dataStorage + uri;
         return fileManager.getTextFromFile(filePath);
     }
 

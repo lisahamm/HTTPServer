@@ -19,7 +19,7 @@ public class AppResourceManagerTest {
         fileManager = new MockFileManager();
         String publicDirectoryPath = "/public";
         String pathToDataStorage = "/database";
-        resourceManager = new AppResourceManager(fileManager, publicDirectoryPath, pathToDataStorage);
+        resourceManager = new AppResourceManager(fileManager);
     }
 
     @Test

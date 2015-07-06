@@ -24,9 +24,7 @@ public class ServerMain {
     }
 
     private static Router buildRouter(FileManager fileManager) {
-        String pathToPublicDirectory = "./../cob_spec/public";
-        String pathToDataStorage = "./../cob_spec/database";
-        ResourceManager resourceManager = new AppResourceManager(fileManager, pathToPublicDirectory, pathToDataStorage);
+        ResourceManager resourceManager = new AppResourceManager(new AppFileManager());
         return new CobSpecRouter(resourceManager);
     }
 }

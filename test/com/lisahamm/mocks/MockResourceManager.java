@@ -10,7 +10,13 @@ import java.util.Map;
 public class MockResourceManager implements ResourceManager {
     private String resourceData = "data=foo";
     private String patchFileContent = "default content";
-    public boolean isPartialContentRequested = false;
+    public boolean isPartialContentRequested;
+    public boolean isUpdated;
+
+    public MockResourceManager() {
+        this.isPartialContentRequested = false;
+        this.isUpdated = false;
+    }
 
     public byte[] getFileContents(String uri) {
         if (uri.equals("/patch-content.txt")) {
@@ -39,6 +45,7 @@ public class MockResourceManager implements ResourceManager {
     }
 
     public void updateResource(String uri, String data) {
+        this.isUpdated = true;
         resourceData = data;
     }
 

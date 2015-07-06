@@ -1,16 +1,17 @@
 package com.lisahamm.application.handlers;
 
 import com.lisahamm.Request;
+import com.lisahamm.ResourceManager;
 import com.lisahamm.ResponseBuilder;
 
 public abstract class BaseController {
-    private String uri;
+    protected ResourceManager resourceManager;
+    protected String uri;
+    protected static String code200 = "200";
+    private static String code405 = "405";
 
-    public BaseController(String uri) {
-        this.uri = uri;
-    }
 
-    public boolean itShouldExecute(Request request) {
+    public boolean shouldExecute(Request request) {
         return uri.equals(request.getRequestURI());
     }
 
@@ -39,10 +40,10 @@ public abstract class BaseController {
         }
     }
 
-    private void handleGet(Request request, ResponseBuilder response){};
-    private void handlePost(Request request, ResponseBuilder response){};
-    private void handlePut(Request request, ResponseBuilder response){};
-    private void handlePatch(Request request, ResponseBuilder response){};
-    private void handleDelete(Request request, ResponseBuilder response){};
-    private void handleOptions(Request request, ResponseBuilder response){};
+    protected void handleGet(Request request, ResponseBuilder response){};
+    protected void handlePost(Request request, ResponseBuilder response){};
+    protected void handlePut(Request request, ResponseBuilder response){};
+    protected void handlePatch(Request request, ResponseBuilder response){};
+    protected void handleDelete(Request request, ResponseBuilder response){};
+    protected void handleOptions(Request request, ResponseBuilder response){};
 }
