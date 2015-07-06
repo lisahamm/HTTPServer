@@ -4,10 +4,11 @@ import com.lisahamm.Request;
 import com.lisahamm.ResourceManager;
 import com.lisahamm.ResponseBuilder;
 
-public abstract class BaseController {
+public abstract class BaseController implements Controller {
     protected ResourceManager resourceManager;
     protected String uri;
     protected static String code200 = "200";
+    protected static String code302 = "302";
     private static String code405 = "405";
 
 
