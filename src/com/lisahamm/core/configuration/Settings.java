@@ -1,6 +1,6 @@
 package com.lisahamm.core.configuration;
 
 public class Settings {
-    public static String publicDirectory = "./../cob_spec/public";
-    public static String dataStorage = "./../cob_spec/database";
+    public static String publicDirectory = System.getProperty("user.dir") + "/public";
+    public static String dataStorage = System.getProperty("user.dir") + "/data";
 }

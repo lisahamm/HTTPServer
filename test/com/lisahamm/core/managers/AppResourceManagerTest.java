@@ -1,4 +1,4 @@
-package com.lisahamm;
+package com.lisahamm.core.managers;
 
 import com.lisahamm.core.managers.AppResourceManager;
 import com.lisahamm.mocks.MockFileManager;
