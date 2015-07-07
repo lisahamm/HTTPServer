@@ -1,5 +1,6 @@
 package com.lisahamm;
 
+import com.lisahamm.core.managers.AppResourceManager;
 import com.lisahamm.mocks.MockFileManager;
 import org.junit.Before;
 import org.junit.Test;

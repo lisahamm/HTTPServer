@@ -1,0 +1,68 @@
+package com.lisahamm.core;
+
+import com.lisahamm.core.connections.ConnectionIO;
+import com.lisahamm.core.requests.HTTPRequest;
+import com.lisahamm.core.requests.RequestParser;
+import com.lisahamm.core.response.ResponseBuilder;
+import com.lisahamm.core.router.Router;
+
+import java.io.IOException;
+
+public class HttpTransaction implements Runnable {
+    private ConnectionIO clientConnection;
+    private RequestParser parser;
+    private ResponseBuilder responseBuilder;
+    private Router router;
+
+    public HttpTransaction(ConnectionIO clientConnection, RequestParser parser,
+                           ResponseBuilder responseBuilder, Router router) {
+        this.clientConnection = clientConnection;
+        this.parser = parser;
+        this.responseBuilder = responseBuilder;
+        this.router = router;
+    }
+
+    public void run() {
+        try {
+            openClientConnectionIO();
+            String rawRequest = readInRawRequest();
+
+            if (requestIsValid(rawRequest)) {
+                HTTPRequest request = parser.generateParsedRequest(rawRequest);
+                router.invoke(request, responseBuilder);
+                if (clientConnection.isValid()) {
+                    sendResponse(responseBuilder);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                clientConnection.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void sendResponse(ResponseBuilder response) throws IOException {
+        clientConnection.writeToOutputStream(response.getEntireResponse());
+    }
+
+    private void openClientConnectionIO() throws IOException {
+        clientConnection.openInputReader();
+        clientConnection.openOutputStream();
+    }
+
+    private String readInRawRequest() throws IOException {
+        StringBuilder rawRequest = new StringBuilder();
+        do {
+            rawRequest.append((char) clientConnection.readInput());
+        } while (clientConnection.inputReaderIsReady());
+        return rawRequest.toString();
+    }
+
+    private boolean requestIsValid(String rawRequest) {
+        return rawRequest.length() > 1;
+    }
+}

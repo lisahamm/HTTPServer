@@ -1,6 +1,6 @@
 package com.lisahamm.mocks;
 
-import com.lisahamm.FileManager;
+import com.lisahamm.core.managers.FileManager;
 import java.io.File;
 
 public class MockFileManager implements FileManager {

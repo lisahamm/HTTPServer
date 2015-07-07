@@ -1,7 +1,7 @@
 package com.lisahamm.mocks;
 
 
-import com.lisahamm.ResourceManager;
+import com.lisahamm.core.managers.ResourceManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +10,20 @@ import java.util.Map;
 public class MockResourceManager implements ResourceManager {
     private String resourceData = "data=foo";
     private String patchFileContent = "default content";
+    public boolean isFileRequested;
     public boolean isPartialContentRequested;
     public boolean isUpdated;
+    public boolean isAppendedToResource;
 
     public MockResourceManager() {
+        this.isFileRequested = false;
         this.isPartialContentRequested = false;
         this.isUpdated = false;
+        this.isAppendedToResource = false;
     }
 
     public byte[] getFileContents(String uri) {
+        isFileRequested = true;
         if (uri.equals("/patch-content.txt")) {
             return patchFileContent.getBytes();
         }
@@ -47,6 +52,10 @@ public class MockResourceManager implements ResourceManager {
     public void updateResource(String uri, String data) {
         this.isUpdated = true;
         resourceData = data;
+    }
+
+    public void appendToResource(String uri, String data) {
+        this.isAppendedToResource = true;
     }
 
     public boolean isPublicResourceFound(String uri) {

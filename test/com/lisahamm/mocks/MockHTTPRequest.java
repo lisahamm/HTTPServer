@@ -1,8 +1,7 @@
 package com.lisahamm.mocks;
 
-import com.lisahamm.Request;
+import com.lisahamm.core.requests.Request;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class MockHTTPRequest implements Request {

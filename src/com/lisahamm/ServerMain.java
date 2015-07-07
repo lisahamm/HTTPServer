@@ -1,5 +1,8 @@
 package com.lisahamm;
 
+import com.lisahamm.application.router.AppRouterFactory;
+import com.lisahamm.core.Server;
+
 import java.io.*;
 
 public class ServerMain {
@@ -16,15 +19,7 @@ public class ServerMain {
             portNumber = Integer.parseInt(args[0]);
         }
 
-        FileManager fileManager = new AppFileManager();
-        Logger logger = new RequestLogger(fileManager);
-        Router router = buildRouter(fileManager);
-        Server server = new Server(portNumber, router, logger);
+        Server server = new Server(portNumber, new AppRouterFactory());
         server.run();
-    }
-
-    private static Router buildRouter(FileManager fileManager) {
-        ResourceManager resourceManager = new AppResourceManager(new AppFileManager());
-        return new CobSpecRouter(resourceManager);
     }
 }
