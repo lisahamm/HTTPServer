@@ -15,7 +15,6 @@ import java.util.Set;
 
 public class CobSpecRouter implements Router {
     protected ResourceManager resourceManager;
-    private Logger logger;
     private Map<String, Map<String, Controller>> routes = new HashMap<>();
     private Set<String> resources = new HashSet<>();
 
