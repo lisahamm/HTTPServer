@@ -17,8 +17,6 @@ public class AppResourceManagerTest {
     @Before
     public void setUp() throws Exception {
         fileManager = new MockFileManager();
-        String publicDirectoryPath = "/public";
-        String pathToDataStorage = "/database";
         resourceManager = new AppResourceManager(fileManager);
     }
 
@@ -66,13 +64,6 @@ public class AppResourceManagerTest {
         resourceManager.patchResource(uri, "data");
 
         assertTrue(fileManager.isWrittenToFile);
-    }
-
-    @Test
-    public void testItDelegatesToFileManagerToRetrieveResourceData() throws Exception {
-        resourceManager.retrieveData(uri);
-
-        assertTrue(fileManager.isFileTextRequested);
     }
 
     @Test

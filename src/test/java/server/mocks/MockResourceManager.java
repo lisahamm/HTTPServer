@@ -1,6 +1,7 @@
 package server.mocks;
 
 
+import server.application.Resources;
 import server.core.managers.ResourceManager;
 
 import java.util.ArrayList;
@@ -67,9 +68,5 @@ public class MockResourceManager implements ResourceManager {
 
     public void patchResource(String uri, String data) {
         patchFileContent = data;
-    }
-
-    public String retrieveData(String uri) {
-        return resourceData;
     }
 }

@@ -1,5 +1,7 @@
 package server.core.managers;
 
+import server.application.Resources;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,4 @@ public interface ResourceManager {
     public boolean isPublicResourceFound(String uri);
 
     public void patchResource(String uri, String data);
-
-    public String retrieveData(String uri);
 }

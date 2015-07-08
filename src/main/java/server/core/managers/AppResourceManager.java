@@ -1,5 +1,6 @@
 package server.core.managers;
 
+import server.application.Resources;
 import server.core.configuration.Settings;
 
 import java.io.File;
@@ -73,10 +74,4 @@ public class AppResourceManager implements ResourceManager {
         String filePath = publicDirectory + uri;
         fileManager.writeToFile(filePath, data);
     }
-
-    public String retrieveData(String uri) {
-        String filePath = dataStorage + uri;
-        return fileManager.getTextFromFile(filePath);
-    }
-
 }
