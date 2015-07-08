@@ -5,7 +5,7 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RequestParser {
+public class RequestParser implements Parser {
     private Map<String,String> parsedRequestComponents = new HashMap<>();
     private String uriWithoutParams;
     private Map<String, String> params;
@@ -14,7 +14,7 @@ public class RequestParser {
     public RequestParser() {
     }
 
-    public HTTPRequest generateParsedRequest(String rawRequest) {
+    public Request generateParsedRequest(String rawRequest) {
         parseRequest(rawRequest);
         return new HTTPRequest(parsedRequestComponents, params, headers);
     }

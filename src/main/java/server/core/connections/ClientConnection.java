@@ -24,18 +24,16 @@ public class ClientConnection implements ConnectionIO {
         outputStream = new DataOutputStream(clientSocket.getOutputStream());
     }
 
-    public int readInput() throws IOException {
-        return inputReader.read();
+    public String readInputToString() throws IOException {
+        StringBuilder input = new StringBuilder();
+        do {
+            input.append((char) readInput());
+        } while (inputReaderIsReady());
+        return input.toString();
     }
 
     public boolean inputReaderIsReady() throws IOException {
         return inputReader.ready();
-    }
-
-    public void writeToOutputStream(String output) throws IOException {
-        outputStream.flush();
-        outputStream.writeBytes(output);
-        outputStream.flush();
     }
 
     public void writeToOutputStream(byte[] output) throws IOException {
@@ -53,4 +51,9 @@ public class ClientConnection implements ConnectionIO {
     public boolean isValid() {
         return (!clientSocket.isOutputShutdown()) && clientSocket.isConnected();
     }
+
+    private int readInput() throws IOException {
+        return inputReader.read();
+    }
+
 }

@@ -18,25 +18,25 @@ public class RequestParserTest {
 
     @Test
     public void testRequestMethodIsParsed() throws Exception {
-        HTTPRequest request = requestParser.generateParsedRequest(rawRequest);
+        Request request = requestParser.generateParsedRequest(rawRequest);
         assertEquals("GET", request.getRequestMethod());
     }
 
     @Test
     public void testRequestUriIsParsed() throws Exception {
-        HTTPRequest request = requestParser.generateParsedRequest(rawRequest);
+        Request request = requestParser.generateParsedRequest(rawRequest);
         assertEquals("/", request.getRequestURI());
     }
 
     @Test
     public void testEncodedRequestUriIsParsed() throws Exception {
-        HTTPRequest request = requestParser.generateParsedRequest(rawRequestEncoded);
+        Request request = requestParser.generateParsedRequest(rawRequestEncoded);
         assertEquals("/file1 copy", request.getRequestURI());
     }
 
     @Test
     public void testRequestHTTPVersionIsParsed() throws Exception {
-        HTTPRequest request = requestParser.generateParsedRequest(rawRequest);
+        Request request = requestParser.generateParsedRequest(rawRequest);
         assertEquals("HTTP/1.1", request.getHTTPVersion());
     }
 
@@ -44,13 +44,13 @@ public class RequestParserTest {
     public void testRequestHeaderIsParsed() throws Exception {
         String headerKey = "Host";
         String headerValue = "0.0.0.0";
-        HTTPRequest request = requestParser.generateParsedRequest(rawRequest);
+        Request request = requestParser.generateParsedRequest(rawRequest);
         assertEquals(headerValue, request.getHeaders().get(headerKey));
     }
 
     @Test
     public void testRequestBodyIsParsed() throws Exception {
-        HTTPRequest request = requestParser.generateParsedRequest(rawRequest);
+        Request request = requestParser.generateParsedRequest(rawRequest);
         assertEquals("Body", request.getBody());
     }
 
@@ -61,7 +61,7 @@ public class RequestParserTest {
         String assignmentOperator = "=";
         String paramKeyValuePair = paramKey + assignmentOperator + paramValue;
         String rawRequestWithParam = generateRawGetParamsRequest(paramKeyValuePair);
-        HTTPRequest requestWithParam = requestParser.generateParsedRequest(rawRequestWithParam);
+        Request requestWithParam = requestParser.generateParsedRequest(rawRequestWithParam);
         assertEquals(paramValue, requestWithParam.getParams().get(paramKey));
     }
 
@@ -75,7 +75,7 @@ public class RequestParserTest {
         String params = param1Key + assignmentOperator + param1Value;
         params += "&" + param2Key + assignmentOperator + param2Value;
         String rawRequestWithParams = generateRawGetParamsRequest(params);
-        HTTPRequest requestWithParams = requestParser.generateParsedRequest(rawRequestWithParams);
+        Request requestWithParams = requestParser.generateParsedRequest(rawRequestWithParams);
         assertEquals(param1Value, requestWithParams.getParams().get(param1Key));
         assertEquals(param2Value, requestWithParams.getParams().get(param2Key));
     }
@@ -88,7 +88,7 @@ public class RequestParserTest {
         String param2Value = "stuff";
         String encodedParams = "variable_1=Operators%20%3C%2C%20%3E%2C%20%3D%2C%20!%3D%3B%20%2B%2C%20-%2C%20*%2C%20%26%2C%20%40%2C%20%23%2C%20%24%2C%20%5B%2C%20%5D%3A%20%22is%20that%20all%22%3F&variable_2=stuff";
         String rawRequestWithParams = generateRawGetParamsRequest(encodedParams);
-        HTTPRequest requestWithParams = requestParser.generateParsedRequest(rawRequestWithParams);
+        Request requestWithParams = requestParser.generateParsedRequest(rawRequestWithParams);
         assertEquals(param1Value, requestWithParams.getParams().get(param1Key));
         assertEquals(param2Value, requestWithParams.getParams().get(param2Key));
     }

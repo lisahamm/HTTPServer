@@ -10,11 +10,9 @@ public interface ConnectionIO {
 
     public void openOutputStream() throws IOException;
 
-    public int readInput() throws IOException;
+    public String readInputToString() throws IOException;
 
     public boolean inputReaderIsReady() throws IOException;
-
-    public void writeToOutputStream(String output) throws IOException;
 
     public void writeToOutputStream(byte[] output) throws IOException;
 
