@@ -1,5 +1,6 @@
 package server.application.controllers;
 
+import server.application.Resources;
 import server.core.requests.Request;
 import server.core.response.ResponseBuilder;
 import server.core.managers.ResourceManager;
@@ -35,15 +36,15 @@ public class FormController extends BaseController {
 
     @Override
     protected void handleDelete(Request request, ResponseBuilder response) {
-        updateResource(request.getBody());
+        updateResource("");
         response.addStatusLine(code200);
     }
 
     private String getFormData() {
-        return resourceManager.retrieveData(uri);
+        return Resources.form;
     }
 
     private void updateResource(String data) {
-        resourceManager.updateResource(uri, data);
+        Resources.form = data;
     }
 }

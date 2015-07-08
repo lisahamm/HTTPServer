@@ -1,5 +1,6 @@
 package server.core.requests;
 
+import server.application.Resources;
 import server.mocks.MockResourceManager;
 import org.junit.Test;
 
@@ -8,12 +9,11 @@ import static org.junit.Assert.assertTrue;
 public class RequestLoggerTest {
     @Test
     public void testItLogsARequest() throws Exception {
-        MockResourceManager resourceManager = new MockResourceManager();
-        RequestLogger logger = new RequestLogger(resourceManager);
+        RequestLogger logger = new RequestLogger();
+        String request = "GET /logs HTTP/1.1\r\n";
+        logger.addEntry(request);
 
-        logger.addEntry("GET /logs HTTP/1.1\r\n");
-
-        assertTrue(resourceManager.isAppendedToResource);
+        assertTrue(Resources.logs.toString().contains(request));
 
     }
 }

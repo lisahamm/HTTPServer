@@ -1,5 +1,6 @@
 package server.application.controllers;
 
+import server.application.Resources;
 import server.core.response.ResponseBuilder;
 import server.mocks.MockHTTPRequest;
 import server.mocks.MockResourceManager;
@@ -55,7 +56,7 @@ public class LogsControllerTest {
 
         assertTrue(response.getResponseHeader().contains(responseStatus200));
         String responseBody = new String(response.getBody());
-        assertTrue(responseBody.contains(resourceManager.retrieveData("/logs")));
+        assertTrue(responseBody.contains(Resources.logs.toString()));
     }
 
     @Test

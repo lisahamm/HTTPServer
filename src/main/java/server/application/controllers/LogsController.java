@@ -1,5 +1,6 @@
 package server.application.controllers;
 
+import server.application.Resources;
 import server.core.requests.Request;
 import server.core.managers.ResourceManager;
 import server.core.response.ResponseBuilder;
@@ -56,6 +57,6 @@ public class LogsController extends BaseController {
     }
 
     private String getLogs() {
-        return resourceManager.retrieveData(uri);
+        return Resources.logs.toString();
     }
 }

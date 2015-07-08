@@ -1,10 +1,13 @@
 package server.application.controllers;
 
+import server.application.Resources;
 import server.core.response.ResponseBuilder;
 import server.mocks.MockHTTPRequest;
 import server.mocks.MockResourceManager;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.annotation.Resource;
 
 import static org.junit.Assert.*;
 
@@ -46,9 +49,7 @@ public class FormControllerTest {
         controller.execute(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus200));
-        String resourceData = resourceManager.retrieveData(request.getRequestURI());
-        String responseBody = new String(response.getBody());
-        assertEquals(resourceData, responseBody);
+        assertEquals(Resources.form, new String(response.getBody()));
     }
 
     @Test
@@ -60,8 +61,8 @@ public class FormControllerTest {
         controller.execute(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus200));
-        assertTrue(resourceManager.isUpdated);
 
+        assertEquals(request.getBody(), Resources.form);
     }
 
     @Test
@@ -73,7 +74,7 @@ public class FormControllerTest {
         controller.execute(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus200));
-        assertTrue(resourceManager.isUpdated);
+        assertEquals(request.getBody(), Resources.form);
     }
 
     @Test
@@ -84,6 +85,6 @@ public class FormControllerTest {
         controller.execute(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus200));
-        assertTrue(resourceManager.isUpdated);
+        assertEquals("", Resources.form);
     }
 }
