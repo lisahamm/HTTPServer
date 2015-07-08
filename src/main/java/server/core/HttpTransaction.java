@@ -28,10 +28,12 @@ public class HttpTransaction implements Runnable {
             openClientConnectionIO();
             String rawRequest = readInRawRequest();
 
-            if (isRequestValid(rawRequest)) {
+            if (hasContent(rawRequest)) {
                 logger.addEntry(rawRequest);
+
                 Request request = parser.generateParsedRequest(rawRequest);
                 router.invoke(request, responseBuilder);
+
                 if (clientConnection.isValid()) {
                     sendResponse(responseBuilder);
                 }
@@ -47,10 +49,6 @@ public class HttpTransaction implements Runnable {
         }
     }
 
-    private void sendResponse(ResponseBuilder response) throws IOException {
-        clientConnection.writeToOutputStream(response.getEntireResponse());
-    }
-
     private void openClientConnectionIO() throws IOException {
         clientConnection.openInputReader();
         clientConnection.openOutputStream();
@@ -60,7 +58,12 @@ public class HttpTransaction implements Runnable {
         return clientConnection.readInputToString();
     }
 
-    private boolean isRequestValid(String rawRequest) {
+    private boolean hasContent(String rawRequest) {
         return rawRequest.length() > 1;
     }
+
+    private void sendResponse(ResponseBuilder response) throws IOException {
+        clientConnection.writeToOutputStream(response.getEntireResponse());
+    }
+
 }

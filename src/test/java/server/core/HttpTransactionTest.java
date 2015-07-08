@@ -2,13 +2,9 @@ package server.core;
 
 import org.junit.Before;
 import org.junit.Test;
-import server.core.connections.ConnectionIO;
-import server.core.requests.*;
+
 import server.core.response.ResponseBuilder;
 import server.mocks.*;
-
-import java.io.IOException;
-import java.net.Socket;
 
 import static org.junit.Assert.*;
 
