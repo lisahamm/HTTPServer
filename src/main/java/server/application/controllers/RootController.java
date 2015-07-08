@@ -1,5 +1,6 @@
 package server.application.controllers;
 
+import server.core.Constants.Response;
 import server.core.helpers.HtmlBuilder;
 import server.core.managers.ResourceManager;
 import server.core.requests.Request;
@@ -18,8 +19,8 @@ public class RootController extends BaseController {
 
     @Override
     protected void handleGet(Request request, ResponseBuilder response) {
-        response.addStatusLine(code200);
-        response.addHeader(contentTypeHTML);
+        response.addStatusLine(Response.code200);
+        response.addHeader(Response.contentTypeHTML);
         List<String> publicFiles = resourceManager.getPublicDirectoryContents();
         String view = addHtmlLinks(publicFiles);
         response.addBody(view.getBytes());

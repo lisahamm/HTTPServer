@@ -1,5 +1,6 @@
 package server.application.controllers;
 
+import server.core.Constants.Response;
 import server.core.requests.Request;
 import server.core.managers.ResourceManager;
 import server.core.response.ResponseBuilder;
@@ -14,8 +15,8 @@ public class ParametersController extends BaseController {
 
     @Override
     protected void handleGet(Request request, ResponseBuilder response) {
-        response.addStatusLine(code200);
-        response.addHeader(contentTypeTextPlain);
+        response.addStatusLine(Response.code200);
+        response.addHeader(Response.contentTypeTextPlain);
         String requestParams = paramsHashToString(request.getParams());
         response.addBody(requestParams.getBytes());
     }

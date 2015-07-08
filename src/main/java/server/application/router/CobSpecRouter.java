@@ -1,6 +1,7 @@
 package server.application.router;
 
 import server.application.controllers.*;
+import server.core.Constants.Response;
 import server.core.managers.ResourceManager;
 import server.core.requests.Logger;
 import server.core.requests.Request;
@@ -42,11 +43,11 @@ public class CobSpecRouter implements Router {
 
     private void evaluateClientError(Request request, ResponseBuilder response) {
         if (resources.contains(request.getRequestURI())) {
-            response.addStatusLine("405");
+            response.addStatusLine(Response.code405);
         } else if (routes.containsKey(request.getRequestMethod())) {
-            response.addStatusLine("404");
+            response.addStatusLine(Response.code404);
         } else {
-            response.addStatusLine("400");
+            response.addStatusLine(Response.code400);
         }
     }
 
