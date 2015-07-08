@@ -21,7 +21,6 @@ public class CobSpecRouter implements Router {
 
     public CobSpecRouter(ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
-        this.logger = new RequestLogger(resourceManager);
     }
 
     public void invoke(Request request, ResponseBuilder response) {
@@ -32,18 +31,6 @@ public class CobSpecRouter implements Router {
         } else {
             evaluateClientError(request.getRequestURI(), response);
         }
-        logRequest(request);
-    }
-
-    private void logRequest(Request request) {
-        StringBuilder requestEntry = new StringBuilder(request.getRequestMethod() + " ");
-        requestEntry.append(request.getRequestURI() + " ");
-        requestEntry.append(request.getHTTPVersion() + "\r\n");
-        requestEntry.append(request.getHeaders().toString() + "\r\n");
-        if (request.getBody() != null) {
-            requestEntry.append(request.getBody());
-        }
-        logger.addEntry(requestEntry.toString());
     }
 
     private Controller findExecutable(String verb, String uri) {

@@ -1,6 +1,7 @@
 package server.core;
 
 import server.core.connections.ClientConnection;
+import server.core.requests.RequestLogger;
 import server.core.requests.RequestParser;
 import server.core.response.ResponseBuilder;
 import server.core.router.RouterFactory;
@@ -30,7 +31,8 @@ public class Server implements Runnable {
 
             while (!threadPool.isShutdown()) {
                 threadPool.execute(new HttpTransaction(new ClientConnection(serverSocket.accept()),
-                        new RequestParser(), new ResponseBuilder(), routerFactory.buildRouter()));
+                        new RequestParser(), new ResponseBuilder(), routerFactory.buildRouter(),
+                        new RequestLogger()));
             }
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "

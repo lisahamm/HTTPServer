@@ -11,12 +11,10 @@ import java.util.Map;
 public class AppResourceManager implements ResourceManager {
     private FileManager fileManager;
     private String publicDirectory;
-    private String dataStorage;
 
     public AppResourceManager(FileManager fileManager) {
         this.fileManager = fileManager;
         this.publicDirectory = Settings.publicDirectory;
-        this.dataStorage = Settings.dataStorage;
     }
 
     public byte[] getFileContents(String uri) {
