@@ -2,18 +2,21 @@ package server.core.requests;
 import org.junit.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class RequestParserTest {
     private RequestParser requestParser;
     private String rawRequest;
     private String rawRequestEncoded;
+    private String nonHTTPRawRequest;
 
     @Before
     public void setUp() throws Exception {
         requestParser = new RequestParser();
         rawRequest = "GET / HTTP/1.1\r\nHost: 0.0.0.0\r\n\r\nBody";
         rawRequestEncoded = "GET /file1%20copy HTTP/1.1\r\nHost: 0.0.0.0\r\n";
+        nonHTTPRawRequest = "cobspec";
     }
 
     @Test
@@ -91,6 +94,13 @@ public class RequestParserTest {
         Request requestWithParams = requestParser.generateParsedRequest(rawRequestWithParams);
         assertEquals(param1Value, requestWithParams.getParams().get(param1Key));
         assertEquals(param2Value, requestWithParams.getParams().get(param2Key));
+    }
+
+    @Test
+    public void testParsesInvalidRequest() throws Exception {
+        Request request = requestParser.generateParsedRequest(nonHTTPRawRequest);
+        assertTrue(request.getRequestMethod() != null);
+        assertTrue(request.getHeaders() != null);
     }
 
     private String generateRawGetParamsRequest(String params) {

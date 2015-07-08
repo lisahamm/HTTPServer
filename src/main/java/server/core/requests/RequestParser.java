@@ -12,6 +12,9 @@ public class RequestParser implements Parser {
     private Map<String, String> headers;
 
     public RequestParser() {
+        uriWithoutParams = "";
+        params = new HashMap<>();
+        headers = new HashMap<>();
     }
 
     public Request generateParsedRequest(String rawRequest) {
@@ -36,9 +39,15 @@ public class RequestParser implements Parser {
 
     private void parseRequestLine(String requestLine) {
         String[] messageComponents = requestLine.split(" ", 3);
-        parsedRequestComponents.put("requestMethod", messageComponents[0]);
-        parseRequestURI(messageComponents[1]);
-        parsedRequestComponents.put("httpVersion", messageComponents[2]);
+        if(messageComponents.length != 3) {
+            parsedRequestComponents.put("requestMethod", "");
+            parsedRequestComponents.put("requestURI", "");
+            parsedRequestComponents.put("httpVersion", "");
+        } else {
+            parsedRequestComponents.put("requestMethod", messageComponents[0]);
+            parseRequestURI(messageComponents[1]);
+            parsedRequestComponents.put("httpVersion", messageComponents[2]);
+        }
     }
 
     private void parseRequestURI(String uri) {

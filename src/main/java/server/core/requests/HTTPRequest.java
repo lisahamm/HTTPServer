@@ -11,12 +11,12 @@ public class HTTPRequest implements Request {
     private String body;
 
     public HTTPRequest(Map<String, String> parsedRequestComponents, Map<String,String> params, Map<String,String> headers) {
-        requestMethod = parsedRequestComponents.get("requestMethod");
-        requestURI = parsedRequestComponents.get("requestURI");
-        httpVersion = parsedRequestComponents.get("httpVersion");
+        this.requestMethod = parsedRequestComponents.get("requestMethod");
+        this.requestURI = parsedRequestComponents.get("requestURI");
+        this.httpVersion = parsedRequestComponents.get("httpVersion");
         this.params = params;
         this.headers = headers;
-        body = parsedRequestComponents.get("body");
+        this.body = parsedRequestComponents.get("body");
     }
 
     public String getRequestMethod() {

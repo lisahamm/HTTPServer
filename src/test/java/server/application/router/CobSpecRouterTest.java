@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 public class CobSpecRouterTest {
     private String responseStatus200 = "HTTP/1.1 200 OK\r\n";
     private String responseStatus404 = "HTTP/1.1 404 Not Found\r\n";
+    private String responseStatus400 = "HTTP/1.1 400 Bad Request\r\n";
     private String responseStatus405 = "HTTP/1.1 405 Method Not Allowed\r\n";
 
     @Test
@@ -39,7 +40,7 @@ public class CobSpecRouterTest {
     }
 
     @Test
-    public void testItRoutesRequestWithValidUriAndInvalidHTTPMethod() throws Exception {
+    public void testRoutesRequestWithValidUriAndHTTPMethodThatIsNotAllowed() throws Exception {
         MockHTTPRequest request = new MockHTTPRequest();
         request.requestMethod = "DELETE";
         request.requestURI = "/file1";
@@ -49,5 +50,18 @@ public class CobSpecRouterTest {
         router.invoke(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus405));
+    }
+
+    @Test
+    public void testInvokeWithRequestWithHttpMethodUnsupportedByServer() throws Exception {
+        MockHTTPRequest request = new MockHTTPRequest();
+        request.requestMethod = "";
+        request.requestURI = "";
+        ResponseBuilder response = new ResponseBuilder();
+        CobSpecRouter router = new CobSpecRouter(new MockResourceManager());
+
+        router.invoke(request, response);
+
+        assertTrue(response.getResponseHeader().contains(responseStatus400));
     }
 }

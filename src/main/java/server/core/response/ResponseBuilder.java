@@ -77,6 +77,7 @@ public class ResponseBuilder {
         statuses.put("204", "204 No Content");
         statuses.put("206", "206 Partial Content");
         statuses.put("302", "302 Found");
+        statuses.put("400", "400 Bad Request");
         statuses.put("401", "401 Unauthorized");
         statuses.put("404", "404 Not Found");
         statuses.put("405", "405 Method Not Allowed");

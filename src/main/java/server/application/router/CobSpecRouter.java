@@ -28,19 +28,25 @@ public class CobSpecRouter implements Router {
         if (controller != null) {
             controller.execute(request, response);
         } else {
-            evaluateClientError(request.getRequestURI(), response);
+            evaluateClientError(request, response);
         }
     }
 
     private Controller findExecutable(String verb, String uri) {
-        return routes.get(verb).get(uri);
+        if (routes.containsKey(verb)) {
+            return routes.get(verb).get(uri);
+        } else {
+            return null;
+        }
     }
 
-    private void evaluateClientError(String uri, ResponseBuilder response) {
-        if (resources.contains(uri)) {
+    private void evaluateClientError(Request request, ResponseBuilder response) {
+        if (resources.contains(request.getRequestURI())) {
             response.addStatusLine("405");
-        } else {
+        } else if (routes.containsKey(request.getRequestMethod())) {
             response.addStatusLine("404");
+        } else {
+            response.addStatusLine("400");
         }
     }
 
