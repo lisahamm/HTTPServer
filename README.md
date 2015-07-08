@@ -30,6 +30,6 @@ Start the server from the command line
 
 Run the tests from the root directory 
 
-    $ ./gradlew build
+    $ ./gradlew check
 
     
