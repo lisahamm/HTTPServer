@@ -2,24 +2,19 @@ package server;
 
 import server.core.Server;
 import server.application.router.AppRouterFactory;
+import server.core.configuration.Settings;
 
 import java.io.*;
 
 public class ServerMain {
 
     public static void main(String[] args) throws Exception {
-        startServer(args);
+        Settings.configureFromCommandLine(args);
+        startServer();
     }
 
-    public static void startServer(String[] args) throws IOException {
-        int portNumber;
-        if (args.length != 1) {
-            portNumber = 5000;
-        } else {
-            portNumber = Integer.parseInt(args[0]);
-        }
-
-        Server server = new Server(portNumber, new AppRouterFactory());
+    private static void startServer() throws IOException {
+        Server server = new Server(Settings.portNumber, new AppRouterFactory());
         server.run();
     }
 }
