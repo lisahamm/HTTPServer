@@ -13,14 +13,10 @@ public class MockResourceManager implements ResourceManager {
     private String patchFileContent = "default content";
     public boolean isFileRequested;
     public boolean isPartialContentRequested;
-    public boolean isUpdated;
-    public boolean isAppendedToResource;
 
     public MockResourceManager() {
         this.isFileRequested = false;
         this.isPartialContentRequested = false;
-        this.isUpdated = false;
-        this.isAppendedToResource = false;
     }
 
     public byte[] getFileContents(String uri) {
@@ -48,15 +44,6 @@ public class MockResourceManager implements ResourceManager {
         List<String> publicFiles = new ArrayList<>();
         publicFiles.add(0, "file1");
         return publicFiles;
-    }
-
-    public void updateResource(String uri, String data) {
-        this.isUpdated = true;
-        resourceData = data;
-    }
-
-    public void appendToResource(String uri, String data) {
-        this.isAppendedToResource = true;
     }
 
     public boolean isPublicResourceFound(String uri) {

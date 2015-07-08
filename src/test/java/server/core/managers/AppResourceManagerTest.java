@@ -46,13 +46,6 @@ public class AppResourceManagerTest {
     }
 
     @Test
-    public void testItDelegatesToFileManagerToUpdateAResource() throws Exception {
-        resourceManager.updateResource(uri, "data");
-
-        assertTrue(fileManager.isWrittenToFile);
-    }
-
-    @Test
     public void testItDelegatesToFileManagerToCheckIfPublicResourceExists() throws Exception {
         resourceManager.isPublicResourceFound(uri);
 

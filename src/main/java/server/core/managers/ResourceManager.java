@@ -16,10 +16,6 @@ public interface ResourceManager {
 
     public List<String> getPublicDirectoryContents();
 
-    public void updateResource(String uri, String data);
-
-    public void appendToResource(String uri, String data);
-
     public boolean isPublicResourceFound(String uri);
 
     public void patchResource(String uri, String data);

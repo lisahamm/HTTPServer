@@ -55,16 +55,6 @@ public class AppResourceManager implements ResourceManager {
         return fileNames;
     }
 
-    public void updateResource(String uri, String data) {
-        String filePath = dataStorage + uri;
-        fileManager.writeToFile(filePath, data);
-    }
-
-    public void appendToResource(String uri, String data) {
-        String filePath = dataStorage + uri;
-        fileManager.appendToFile(filePath, data);
-    }
-
     public boolean isPublicResourceFound(String uri) {
         String filePath = publicDirectory + uri;
         return fileManager.isFileFound(filePath);
