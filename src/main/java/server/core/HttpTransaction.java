@@ -1,9 +1,7 @@
 package server.core;
 
 import server.core.connections.ConnectionIO;
-import server.core.requests.HTTPRequest;
-import server.core.requests.Logger;
-import server.core.requests.RequestParser;
+import server.core.requests.*;
 import server.core.response.ResponseBuilder;
 import server.core.router.Router;
 
@@ -11,12 +9,12 @@ import java.io.IOException;
 
 public class HttpTransaction implements Runnable {
     private ConnectionIO clientConnection;
-    private RequestParser parser;
+    private Parser parser;
     private ResponseBuilder responseBuilder;
     private Router router;
     private Logger logger;
 
-    public HttpTransaction(ConnectionIO clientConnection, RequestParser parser,
+    public HttpTransaction(ConnectionIO clientConnection, Parser parser,
                            ResponseBuilder responseBuilder, Router router, Logger logger) {
         this.clientConnection = clientConnection;
         this.parser = parser;
@@ -30,9 +28,9 @@ public class HttpTransaction implements Runnable {
             openClientConnectionIO();
             String rawRequest = readInRawRequest();
 
-            if (requestIsValid(rawRequest)) {
+            if (isRequestValid(rawRequest)) {
                 logger.addEntry(rawRequest);
-                HTTPRequest request = parser.generateParsedRequest(rawRequest);
+                Request request = parser.generateParsedRequest(rawRequest);
                 router.invoke(request, responseBuilder);
                 if (clientConnection.isValid()) {
                     sendResponse(responseBuilder);
@@ -59,14 +57,10 @@ public class HttpTransaction implements Runnable {
     }
 
     private String readInRawRequest() throws IOException {
-        StringBuilder rawRequest = new StringBuilder();
-        do {
-            rawRequest.append((char) clientConnection.readInput());
-        } while (clientConnection.inputReaderIsReady());
-        return rawRequest.toString();
+        return clientConnection.readInputToString();
     }
 
-    private boolean requestIsValid(String rawRequest) {
+    private boolean isRequestValid(String rawRequest) {
         return rawRequest.length() > 1;
     }
 }
