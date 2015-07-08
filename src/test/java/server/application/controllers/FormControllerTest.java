@@ -28,20 +28,6 @@ public class FormControllerTest {
     }
 
     @Test
-    public void testItShouldExecuteWithCorrectRequestURI() throws Exception {
-        request.requestURI = formUri;
-
-        assertTrue(controller.shouldExecute(request));
-    }
-
-    @Test
-    public void testItShouldNotExecuteWithIncorrectRequestURI() throws Exception {
-        request.requestURI = "/form2";
-
-        assertFalse(controller.shouldExecute(request));
-    }
-
-    @Test
     public void testItExecutesHandlingOfGetRequestWithFormURI() throws Exception {
         request.requestMethod = "GET";
         request.requestURI = formUri;

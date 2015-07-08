@@ -32,20 +32,6 @@ public class LogsControllerTest {
     }
 
     @Test
-    public void testItShouldExecuteWithCorrectRequestURI() throws Exception {
-        request.requestURI = logsUri;
-
-        assertTrue(controller.shouldExecute(request));
-    }
-
-    @Test
-    public void testItShouldNotExecuteWithIncorrectRequestURI() throws Exception {
-        request.requestURI = "/root";
-
-        assertFalse(controller.shouldExecute(request));
-    }
-
-    @Test
     public void testItExecutesHandlingOfGetRequestWithValidAuthorizationCredentials() throws Exception {
         request.requestMethod = "GET";
         request.requestURI = logsUri;

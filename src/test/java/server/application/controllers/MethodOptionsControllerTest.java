@@ -24,20 +24,6 @@ public class MethodOptionsControllerTest {
     }
 
     @Test
-    public void testItShouldExecuteWithCorrectRequestURI() throws Exception {
-        request.requestURI = methodOptionsUri;
-
-        assertTrue(controller.shouldExecute(request));
-    }
-
-    @Test
-    public void testItShouldNotExecuteWithIncorrectRequestURI() throws Exception {
-        request.requestURI = "/root";
-
-        assertFalse(controller.shouldExecute(request));
-    }
-
-    @Test
     public void testItExecutesHandlingOfGetRequestWithMethodOptionsURI() throws Exception {
         request.requestMethod = "GET";
         request.requestURI = methodOptionsUri;

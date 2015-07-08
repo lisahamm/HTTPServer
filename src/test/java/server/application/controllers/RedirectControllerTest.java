@@ -25,20 +25,6 @@ public class RedirectControllerTest {
     }
 
     @Test
-    public void testItShouldExecuteWithCorrectRequestURI() throws Exception {
-        request.requestURI = redirectUri;
-
-        assertTrue(controller.shouldExecute(request));
-    }
-
-    @Test
-    public void testItShouldNotExecuteWithIncorrectRequestURI() throws Exception {
-        request.requestURI = "/form";
-
-        assertFalse(controller.shouldExecute(request));
-    }
-
-    @Test
     public void testItExecutesHandlingOfGetRequestWithFormURI() throws Exception {
         request.requestMethod = "GET";
         request.requestURI = redirectUri;

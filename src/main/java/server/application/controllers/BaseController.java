@@ -17,11 +17,6 @@ public abstract class BaseController implements Controller {
     protected static String contentTypeHTML = "Content-Type: text/html";
     protected static String contentTypeTextPlain = "Content-Type: text/plain";
 
-
-    public boolean shouldExecute(Request request) {
-        return uri.equals(request.getRequestURI());
-    }
-
     public void execute(Request request, ResponseBuilder response) {
         switch (request.getRequestMethod()) {
             case "GET":

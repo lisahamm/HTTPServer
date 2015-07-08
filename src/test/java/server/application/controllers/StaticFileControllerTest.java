@@ -29,20 +29,6 @@ public class StaticFileControllerTest {
     }
 
     @Test
-    public void testItShouldExecuteWithARequestURIFoundInPublicDirectory() throws Exception {
-        request.requestURI = "/file1";
-
-        assertTrue(controller.shouldExecute(request));
-    }
-
-    @Test
-    public void testItShouldNotExecuteWithRequestURINotFoundInPublicDirectory() throws Exception {
-        request.requestURI = "/form2";
-
-        assertFalse(controller.shouldExecute(request));
-    }
-
-    @Test
     public void testItExecutesHandlingOfRequestForFullFileInPublicDirectory() throws Exception {
         request.requestMethod = "GET";
         request.requestURI = "/file1";

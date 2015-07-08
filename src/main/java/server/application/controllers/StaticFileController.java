@@ -17,11 +17,6 @@ public class StaticFileController extends BaseController {
     }
 
     @Override
-    public boolean shouldExecute(Request request) {
-        return resourceManager.isPublicResourceFound(request.getRequestURI());
-    }
-
-    @Override
     protected void handleGet(Request request, ResponseBuilder response) {
         byte[] body;
         if (request.getHeaders().containsKey("Range")) {

@@ -27,20 +27,6 @@ public class ParametersControllerTest {
     }
 
     @Test
-    public void testItShouldExecuteWithCorrectRequestURI() throws Exception {
-        request.requestURI = parametersUri;
-
-        assertTrue(controller.shouldExecute(request));
-    }
-
-    @Test
-    public void testItShouldNotExecuteWithIncorrectRequestURI() throws Exception {
-        request.requestURI = "/";
-
-        assertFalse(controller.shouldExecute(request));
-    }
-
-    @Test
     public void testItExecutesHandlingOfGetRequestWithParametersURI() throws Exception {
         request.requestMethod = "GET";
         request.requestURI = parametersUri;
