@@ -33,4 +33,16 @@ public class HeaderParserTest {
 
         assertEquals("0-4", range);
     }
+
+    @Test
+    public void testItParsesAuthorizationHeader() throws Exception {
+        request.requestMethod = "GET";
+        request.requestURI = "/file1";
+        headers.put("Authorization", "Basic YWRtaW46aHVudGVyMg==");
+        request.headers = headers;
+
+        String authorizationValue = HeaderParser.parseAuthorizationHeader(request);
+
+        assertEquals("YWRtaW46aHVudGVyMg==", authorizationValue);
+    }
 }
