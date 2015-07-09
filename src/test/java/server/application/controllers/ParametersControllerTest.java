@@ -30,7 +30,7 @@ public class ParametersControllerTest {
     public void testItExecutesHandlingOfGetRequestWithParametersURI() throws Exception {
         request.requestMethod = "GET";
         request.requestURI = parametersUri;
-        Map<String,String> params = new HashMap();
+        Map<String,String> params = new HashMap<>();
         params.put("variable1", "parameter 1");
         request.params = params;
 

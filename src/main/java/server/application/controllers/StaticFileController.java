@@ -1,6 +1,6 @@
 package server.application.controllers;
 
-import server.core.Constants.Response;
+import server.core.Constants.HttpStatus;
 import server.core.managers.ResourceManager;
 import server.core.requests.Request;
 import server.core.response.ResponseBuilder;
@@ -21,10 +21,10 @@ public class StaticFileController extends BaseController {
     protected void handleGet(Request request, ResponseBuilder response) {
         byte[] body;
         if (request.getHeaders().containsKey("Range")) {
-            response.addStatusLine(Response.code206);
+            response.addStatusLine(HttpStatus.CODE206.get());
             body = getPartialContents(request);
         } else {
-            response.addStatusLine(Response.code200);
+            response.addStatusLine(HttpStatus.CODE200.get());
             body = resourceManager.getFileContents(request.getRequestURI());
         }
 
@@ -39,10 +39,10 @@ public class StaticFileController extends BaseController {
         String requestEtag = request.getHeaders().get("If-Match");
         if (isPatchPreconditionMet(request.getRequestURI(), requestEtag)) {
             resourceManager.patchResource(request.getRequestURI(), request.getBody());
-            response.addStatusLine(Response.code204);
+            response.addStatusLine(HttpStatus.CODE204.get());
             addEtagToResponse(request.getRequestURI(), response);
         } else {
-            response.addStatusLine(Response.code412);
+            response.addStatusLine(HttpStatus.CODE412.get());
         }
     }
 

@@ -2,12 +2,11 @@ package server.core.response;
 
 import org.junit.Before;
 import org.junit.Test;
+import server.core.Constants.HttpStatus;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-public class ResponseBuilderTest {
-    private String status200 = "200";
+public class ResponseBuilderTest {;
     private String response200 = "HTTP/1.1 200 OK\r\n";
     private String htmlContentHeader = "Content-Type: text/html";
     private String allowHeader = "Allow: GET";
@@ -23,20 +22,20 @@ public class ResponseBuilderTest {
 
     @Test
     public void testBuildResponseWithOnlyStatusLine() throws Exception {
-        response.addStatusLine(status200);
+        response.addStatusLine(HttpStatus.CODE200.get());
         assertEquals(response200, response.getResponseHeader());
     }
 
     @Test
     public void testBuildResponseWithStatusAndHeader() throws Exception {
-        response.addStatusLine(status200);
+        response.addStatusLine(HttpStatus.CODE200.get());
         response.addHeader(htmlContentHeader);
         assertEquals(responseWithHeader200, response.getResponseHeader());
     }
 
     @Test
     public void testBuildResponseWithStatusAndMultipleHeaders() throws Exception {
-        response.addStatusLine(status200);
+        response.addStatusLine(HttpStatus.CODE200.get());
         response.addHeader(htmlContentHeader);
         response.addHeader(allowHeader);
         assertEquals(responseWithHeaders200, response.getResponseHeader());
@@ -50,7 +49,7 @@ public class ResponseBuilderTest {
 
     @Test
     public void testGetEntireResponse() throws Exception {
-        response.addStatusLine("200");
+        response.addStatusLine(HttpStatus.CODE200.get());
         response.addHeader(htmlContentHeader);
         response.addBody(body);
 

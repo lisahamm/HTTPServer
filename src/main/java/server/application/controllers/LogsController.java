@@ -1,7 +1,8 @@
 package server.application.controllers;
 
 import server.application.Resources;
-import server.core.Constants.Response;
+import server.core.Constants.HttpHeader;
+import server.core.Constants.HttpStatus;
 import server.core.requests.Request;
 import server.core.managers.ResourceManager;
 import server.core.response.ResponseBuilder;
@@ -20,12 +21,12 @@ public class LogsController extends BaseController {
     @Override
     protected void handleGet(Request request, ResponseBuilder response) {
         if (isAuthorized(request)) {
-            response.addStatusLine(Response.code200);
+            response.addStatusLine(HttpStatus.CODE200.get());
             String body = getLogs();
             response.addBody(body.getBytes());
         } else {
-            response.addStatusLine(Response.code401);
-            response.addHeader(Response.contentTypeTextPlain);
+            response.addStatusLine(HttpStatus.CODE401.get());
+            response.addHeader(HttpHeader.CONTENT_TYPE_PLAIN.get());
             response.addBody("Authentication required".getBytes());
         }
     }

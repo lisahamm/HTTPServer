@@ -1,5 +1,6 @@
 package server.core.response;
 
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -7,16 +8,13 @@ import java.util.Map;
 
 public class ResponseBuilder {
     public static final String CRLF = "\r\n";
-    private String httpVersion = "HTTP/1.1";
-    private String space = " ";
     private StringBuilder responseHeader = new StringBuilder();
     private String statusLine;
     private StringBuilder headers = new StringBuilder();
     private byte[] body;
 
-    public void addStatusLine(String statusCode) {
-        String status = responseStatuses().get(statusCode);
-        statusLine = httpVersion + space + status + CRLF;
+    public void addStatusLine(String status) {
+        statusLine = status;
     }
 
     public void addHeader(String header) {
