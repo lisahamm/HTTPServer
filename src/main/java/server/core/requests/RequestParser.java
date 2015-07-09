@@ -82,7 +82,7 @@ public class RequestParser implements Parser {
         return paramsHash;
     }
 
-    public HashMap<String, String> getHeadersHash(String headers) {
+    private HashMap<String, String> getHeadersHash(String headers) {
         HashMap<String, String> parsedHeaders = new HashMap<>();
 
         String[] splitHeaders = headers.split("\r\n");
