@@ -2,7 +2,6 @@ package server.core.helpers;
 
 import org.junit.Before;
 import org.junit.Test;
-import server.core.response.ResponseBuilder;
 import server.mocks.MockHTTPRequest;
 
 import java.util.HashMap;
