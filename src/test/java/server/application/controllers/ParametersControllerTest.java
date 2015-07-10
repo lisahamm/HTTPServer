@@ -34,7 +34,7 @@ public class ParametersControllerTest {
         params.put("variable1", "parameter 1");
         request.params = params;
 
-        controller.execute(request, response);
+        controller.handleGet(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus200));
         assertTrue(response.getResponseHeader().contains(contentTypeTextPlain));

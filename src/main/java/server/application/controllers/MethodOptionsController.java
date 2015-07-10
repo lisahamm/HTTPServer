@@ -14,31 +14,31 @@ public class MethodOptionsController extends BaseController {
     }
 
     @Override
-    protected void handleGet(Request request, ResponseBuilder response) {
+    public void handleGet(Request request, ResponseBuilder response) {
         response.addStatusLine(HttpStatus.CODE200.get());
         response.addHeader(allowHeader);
     }
 
     @Override
-    protected void handlePost(Request request, ResponseBuilder response) {
+    public void handlePost(Request request, ResponseBuilder response) {
         response.addStatusLine(HttpStatus.CODE200.get());
         response.addHeader(allowHeader);
     }
 
     @Override
-    protected void handlePut(Request request, ResponseBuilder response) {
+    public void handlePut(Request request, ResponseBuilder response) {
         response.addStatusLine(HttpStatus.CODE200.get());
         response.addHeader(allowHeader);
     }
 
     @Override
-    protected void handleOptions(Request request, ResponseBuilder response) {
+    public void handleOptions(Request request, ResponseBuilder response) {
         response.addStatusLine(HttpStatus.CODE200.get());
         response.addHeader(allowHeader);
     }
 
     @Override
-    protected void handleHead(Request request, ResponseBuilder response) {
+    public void handleHead(Request request, ResponseBuilder response) {
         response.addStatusLine(HttpStatus.CODE200.get());
         response.addHeader(allowHeader);
     }

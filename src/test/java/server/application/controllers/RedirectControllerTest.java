@@ -21,17 +21,23 @@ public class RedirectControllerTest {
     public void setUp() throws Exception {
         controller = new RedirectController(new MockResourceManager());
         request = new MockHTTPRequest();
+        request.requestMethod = "GET";
+        request.requestURI = redirectUri;
         response = new ResponseBuilder();
     }
 
     @Test
-    public void testItExecutesHandlingOfGetRequestWithFormURI() throws Exception {
-        request.requestMethod = "GET";
-        request.requestURI = redirectUri;
-
-        controller.execute(request, response);
+    public void testAdds302FoundStatusToResponseToGetRequestWithRedirectURI() throws Exception {
+        controller.handleGet(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus302));
+    }
+
+    @Test
+    public void testAddsLocationHeaderToResponseToGetRequestWithRedirectURI() throws Exception {
+        controller.handleGet(request, response);
+
         assertTrue(response.getResponseHeader().contains(locationHeader));
     }
+
 }

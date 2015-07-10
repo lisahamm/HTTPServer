@@ -16,7 +16,7 @@ public class StaticFileController extends BaseController {
     }
 
     @Override
-    protected void handleGet(Request request, ResponseBuilder response) {
+    public void handleGet(Request request, ResponseBuilder response) {
         byte[] body;
         if (request.getHeaders().containsKey("Range")) {
             response.addStatusLine(HttpStatus.CODE206.get());
@@ -33,7 +33,7 @@ public class StaticFileController extends BaseController {
     }
 
     @Override
-    protected void handlePatch(Request request, ResponseBuilder response) {
+    public void handlePatch(Request request, ResponseBuilder response) {
         String requestEtag = request.getHeaders().get("If-Match");
         if (isPatchPreconditionMet(request.getRequestURI(), requestEtag)) {
             resourceManager.patchResource(request.getRequestURI(), request.getBody());
@@ -44,7 +44,7 @@ public class StaticFileController extends BaseController {
         }
     }
 
-    private byte[] getPartialContents(Request request) {
+    public byte[] getPartialContents(Request request) {
         int fileLength = resourceManager.getFileSize(request.getRequestURI());
         Map<String, Integer> rangeBoundaries = PartialRequestEvaluator.getRangeBoundaries(request, fileLength);
         return resourceManager.getPartialFileContents(request.getRequestURI(), rangeBoundaries);

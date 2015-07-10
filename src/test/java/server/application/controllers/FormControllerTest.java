@@ -7,8 +7,6 @@ import server.mocks.MockResourceManager;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.annotation.Resource;
-
 import static org.junit.Assert.*;
 
 public class FormControllerTest {
@@ -32,7 +30,7 @@ public class FormControllerTest {
         request.requestMethod = "GET";
         request.requestURI = formUri;
 
-        controller.execute(request, response);
+        controller.handleGet(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus200));
         assertEquals(Resources.form, new String(response.getBody()));
@@ -44,7 +42,7 @@ public class FormControllerTest {
         request.requestURI = formUri;
         request.body = "data=fatcat";
 
-        controller.execute(request, response);
+        controller.handlePost(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus200));
 
@@ -57,7 +55,7 @@ public class FormControllerTest {
         request.requestURI = formUri;
         request.body = "data=heathcliff";
 
-        controller.execute(request, response);
+        controller.handlePut(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus200));
         assertEquals(request.getBody(), Resources.form);
@@ -68,7 +66,7 @@ public class FormControllerTest {
         request.requestMethod = "DELETE";
         request.requestURI = formUri;
 
-        controller.execute(request, response);
+        controller.handleDelete(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus200));
         assertEquals("", Resources.form);

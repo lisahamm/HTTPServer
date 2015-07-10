@@ -14,7 +14,7 @@ public class RedirectController extends BaseController {
     }
 
     @Override
-    protected void handleGet(Request request, ResponseBuilder response) {
+    public void handleGet(Request request, ResponseBuilder response) {
         response.addStatusLine(HttpStatus.CODE302.get());
         response.addHeader("Location: http://localhost:5000/");
     }

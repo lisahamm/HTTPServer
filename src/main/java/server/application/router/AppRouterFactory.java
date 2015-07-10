@@ -1,12 +1,16 @@
 package server.application.router;
 
-import server.core.managers.AppFileManager;
-import server.core.managers.AppResourceManager;
 import server.core.router.Router;
 import server.core.router.RouterFactory;
+import server.core.router.Routes;
 
 public class AppRouterFactory implements RouterFactory {
+    Routes routes;
+
+    public AppRouterFactory() {
+        this.routes = new CobSpecRoutes();
+    }
     public Router buildRouter() {
-        return new CobSpecRouter(new AppResourceManager(new AppFileManager()));
+        return new CobSpecRouter(routes);
     }
 }

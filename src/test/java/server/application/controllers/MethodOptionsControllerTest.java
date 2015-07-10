@@ -28,7 +28,7 @@ public class MethodOptionsControllerTest {
         request.requestMethod = "GET";
         request.requestURI = methodOptionsUri;
 
-        controller.execute(request, response);
+        controller.handleGet(request, response);
 
         String responseHeader = response.getResponseHeader();
         assertTrue(responseHeader.contains(responseStatus200));
@@ -40,7 +40,7 @@ public class MethodOptionsControllerTest {
         request.requestMethod = "POST";
         request.requestURI = methodOptionsUri;
 
-        controller.execute(request, response);
+        controller.handlePost(request, response);
 
         String responseHeader = response.getResponseHeader();
         assertTrue(responseHeader.contains(responseStatus200));
@@ -52,7 +52,7 @@ public class MethodOptionsControllerTest {
         request.requestMethod = "PUT";
         request.requestURI = methodOptionsUri;
 
-        controller.execute(request, response);
+        controller.handlePut(request, response);
 
         String responseHeader = response.getResponseHeader();
         assertTrue(responseHeader.contains(responseStatus200));
@@ -64,7 +64,7 @@ public class MethodOptionsControllerTest {
         request.requestMethod = "OPTIONS";
         request.requestURI = methodOptionsUri;
 
-        controller.execute(request, response);
+        controller.handleOptions(request, response);
 
         String responseHeader = response.getResponseHeader();
         assertTrue(responseHeader.contains(responseStatus200));

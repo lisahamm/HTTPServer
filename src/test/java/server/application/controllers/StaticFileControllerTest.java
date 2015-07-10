@@ -34,7 +34,7 @@ public class StaticFileControllerTest {
         request.requestURI = "/file1";
         request.headers = headers;
 
-        controller.execute(request, response);
+        controller.handleGet(request, response);
 
         assertTrue(response.getResponseHeader().contains("HTTP/1.1 200 OK\r\n"));
         assertTrue(response.getResponseHeader().contains("Content-Type: text/plain\r\n"));
@@ -49,7 +49,7 @@ public class StaticFileControllerTest {
         headers.put("Range", "bytes=0-4");
         request.headers = headers;
 
-        controller.execute(request, response);
+        controller.handleGet(request, response);
 
         assertTrue(response.getResponseHeader().contains("HTTP/1.1 206 Partial Content\r\n"));
         assertTrue(response.getResponseHeader().contains("Content-Type: text/plain\r\n"));
@@ -65,7 +65,7 @@ public class StaticFileControllerTest {
         request.headers = headers;
         request.body = "patched content";
 
-        controller.execute(request, response);
+        controller.handlePatch(request, response);
 
         assertTrue(response.getResponseHeader().contains("HTTP/1.1 204 No Content"));
         assertTrue(response.getResponseHeader().contains("ETag"));

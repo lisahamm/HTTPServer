@@ -38,7 +38,7 @@ public class LogsControllerTest {
         headers.put("Authorization", "Basic YWRtaW46aHVudGVyMg==");
         request.headers = headers;
 
-        controller.execute(request, response);
+        controller.handleGet(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus200));
         String responseBody = new String(response.getBody());
@@ -52,7 +52,7 @@ public class LogsControllerTest {
         headers.put("Authorization", "Basic YWRtaW46dGVzdA==");
         request.headers = headers;
 
-        controller.execute(request, response);
+        controller.handleGet(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus401));
         assertEquals("Authentication required", new String(response.getBody()));
@@ -64,7 +64,7 @@ public class LogsControllerTest {
         request.requestURI = logsUri;
         request.headers = headers;
 
-        controller.execute(request, response);
+        controller.handleGet(request, response);
 
         assertTrue(response.getResponseHeader().contains(responseStatus401));
         assertEquals("Authentication required", new String(response.getBody()));

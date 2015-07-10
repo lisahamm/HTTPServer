@@ -19,7 +19,7 @@ public class RootController extends BaseController {
     }
 
     @Override
-    protected void handleGet(Request request, ResponseBuilder response) {
+    public void handleGet(Request request, ResponseBuilder response) {
         response.addStatusLine(HttpStatus.CODE200.get());
         response.addHeader(HttpHeader.CONTENT_TYPE_HTML.get());
         List<String> publicFiles = resourceManager.getPublicDirectoryContents();

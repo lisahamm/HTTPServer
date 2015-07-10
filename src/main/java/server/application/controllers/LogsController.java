@@ -18,7 +18,7 @@ public class LogsController extends BaseController {
     }
 
     @Override
-    protected void handleGet(Request request, ResponseBuilder response) {
+    public void handleGet(Request request, ResponseBuilder response) {
         if (isAuthorized(request)) {
             response.addStatusLine(HttpStatus.CODE200.get());
             String body = getLogs();

@@ -15,7 +15,7 @@ public class ParametersController extends BaseController {
     }
 
     @Override
-    protected void handleGet(Request request, ResponseBuilder response) {
+    public void handleGet(Request request, ResponseBuilder response) {
         response.addStatusLine(HttpStatus.CODE200.get());
         response.addHeader(HttpHeader.CONTENT_TYPE_PLAIN.get());
         String requestParams = paramsHashToString(request.getParams());

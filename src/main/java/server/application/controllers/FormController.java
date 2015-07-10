@@ -15,7 +15,7 @@ public class FormController extends BaseController {
     }
 
     @Override
-    protected void handleGet(Request request, ResponseBuilder response) {
+    public void handleGet(Request request, ResponseBuilder response) {
         response.addStatusLine(HttpStatus.CODE200.get());
         response.addHeader(HttpHeader.CONTENT_TYPE_HTML.get());
         String body = getFormData();
@@ -25,19 +25,19 @@ public class FormController extends BaseController {
     }
 
     @Override
-    protected void handlePost(Request request, ResponseBuilder response) {
+    public void handlePost(Request request, ResponseBuilder response) {
         updateResource(request.getBody());
         response.addStatusLine(HttpStatus.CODE200.get());
     }
 
     @Override
-    protected void handlePut(Request request, ResponseBuilder response) {
+    public void handlePut(Request request, ResponseBuilder response) {
         updateResource(request.getBody());
         response.addStatusLine(HttpStatus.CODE200.get());
     }
 
     @Override
-    protected void handleDelete(Request request, ResponseBuilder response) {
+    public void handleDelete(Request request, ResponseBuilder response) {
         updateResource("");
         response.addStatusLine(HttpStatus.CODE200.get());
     }
